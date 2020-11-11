@@ -1,0 +1,36 @@
+<section class="d-flex justify-content-center align-items-center">
+
+    <aside>
+      <div class="card-header">
+        <ul class="nav nav-tabs card-header-tabs">
+          <li class="nav-item" (click)="setUser(2)">
+            <a class="nav-link" [ngClass]="logFrm.value.userType === 2 ? 'active': ' disabled'" href="#">Retailer</a>
+          </li>
+
+          <li class="nav-item" (click)="setUser(1)">
+            <a class="nav-link" [ngClass]="logFrm.value.userType === 1 ? 'active': ' disabled'" href="#">Dealer</a>
+          </li>
+        </ul>
+      </div>
+        <div class="p-4">
+            <h1 *ngIf="logFrm.value.userType === 2">Retailer Login</h1>
+            <h1 *ngIf="logFrm.value.userType === 1">Dealer Login</h1>
+            <div *ngIf="logMsg" class="alert" [ngClass]="logMsg.alert">{{logMsg.msg}}</div>
+            <form [formGroup]="logFrm" (submit)="logOn()">
+                <h4>Mobile No.</h4>
+                <input type="text" formControlName="usrName" />
+                <div class="alert alert-danger inputMsg" role="alert" *ngIf="logSubmit && lgFrm.usrName.errors">
+                    <div *ngIf="lgFrm.usrName.errors.required">Please mention your username</div>
+                </div>
+                <h4>Password</h4>
+                <input type="password" formControlName="yrPass" />
+                <div class="alert alert-danger inputMsg" role="alert" *ngIf="logSubmit && lgFrm.yrPass.errors">
+                    <div *ngIf="lgFrm.yrPass.errors.required">Please mention your password</div>
+                </div>
+                <button type="submit" [disabled]="logBtm">Login</button>
+                <hr />
+                <h3>Not yet register? <a routerLink="/register">Join Now</a></h3>
+            </form>
+        </div>
+    </aside>
+</section>

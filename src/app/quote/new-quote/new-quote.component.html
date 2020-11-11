@@ -1,0 +1,87 @@
+<app-header></app-header>
+<section class="container">
+    <div class="row">
+        <aside class="col-6">
+            <div id="category" class="d-flex align-items-center justify-content-between">
+                <select (change)="getCategories($event)">
+                    <option value="" disabled>---Select Field---</option>
+                    <option value="footware">Footware</option>
+                    <option value="medical">Medical</option>
+                </select>
+            </div>
+        </aside>
+        <aside class="col-6">
+
+        </aside>
+    </div>
+
+    <div id="categoryList" *ngIf="categories">
+        <owl-carousel [options]="menuOptions" [items]="categories" [carouselClasses]="['owl-theme', 'row', 'sliding']">
+            <aside *ngFor="let cate of categories" (click)="getProducts(cate.type, cate.name)">
+                <span [style.background-image]= "'url(/assets/images/'+cate.url+'.jpg)'"></span>
+                <h3>{{cate.name}}</h3>
+            </aside>
+        </owl-carousel>
+    </div>
+
+    <div id="productList" class="my-3 text-center" *ngIf="products">
+        <owl-carousel [options]="menuOptions" [items]="products" [carouselClasses]="['owl-theme', 'row', 'sliding']">
+            <aside *ngFor="let prd of products">
+                <span [style.background-image]= "'url(/assets/images/'+prd.url+'.jpg)'"></span>
+                <div class="p-2">
+                    <h3>{{prd.name}}</h3>
+                    <p>{{prd.description}}</p>
+                    <div class="d-flex align-items-center justify-content-between">
+                        <h4>MRP: &#8377;{{prd.price}}</h4>
+                        <a (click)="setCart(prd)" class="btn">Add <i></i></a>
+                    </div>
+                </div>
+            </aside>
+        </owl-carousel>
+    </div>
+
+    <div id="cartSec" class="my-5" *ngIf="cartList && cartList.length != 0">
+        <ul>
+            <li *ngFor="let cart of cartList; let i = index">
+                <div class="proDes d-flex justify-content-between align-items-center">
+                    <span [style.background-image]= "'url(/assets/images/'+cart.url+'.jpg)'"></span>
+                    <div>
+                        <h3>{{cart.name}}</h3>
+                        <p>{{cart.description}}</p>
+                    </div>
+                </div>
+                <a (click)="rmvCart(i)" class="remove"></a>
+                <input type="number" min="1" max="20" value="{{cart.qty}}" (change)="setCart(cart)" />
+                <h4>&#8377;{{cart.price * cart.qty}}</h4>
+            </li>
+        </ul>
+    </div>
+    <div class="d-flex justify-content-between" *ngIf="cartList && cartList.length">
+        <h3>Total</h3>
+        <h4>&#8377;{{total}}</h4>
+    </div>
+    <div class="mb-5 mt-5 text-right" id="checkout" *ngIf="cartList && cartList.length">
+        <a (click)="openModal(factoryTemplate)" class="btn">Send Quote</a>
+    </div>
+</section>
+
+<ng-template #factoryTemplate>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Select Factory</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div *ngIf="aQMsg" class="alert" [ngClass]="aQMsg.alert">{{aQMsg.msg}}</div>
+    <select [(ngModel)]="factory">
+        <option value="" disabled>Choose Factory</option>
+        <option value="factory1">Factory 1</option>
+        <option value="factory2">Factory 2</option>
+        <option value="factory3">Factory 3</option>
+    </select>
+    <a class="btn mt-3" *ngIf="factory !== ''" (click)="submitQuote()">Send</a>
+  </div>
+</ng-template>
+
+<app-side-bar></app-side-bar>

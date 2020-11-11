@@ -1,0 +1,33 @@
+div#filterSec {
+    background-color: #fff;
+    border-radius: 0 0 8px 8px;
+}
+
+div#filterSec h4 {
+    font-size: 15px;
+    font-weight: bold;
+    color: rgb(170,0,0);
+    margin: 20px 0 1px 0;
+}
+
+div.optionList {
+    margin: 5px 0;
+}
+
+div.optionList label {
+    width: 150px;
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    cursor: pointer;
+}
+
+div.optionList label input[type=radio] { margin-right: 10px; }
+
+section#billingSec { background-color: #ffffff; }
+
+section#billingSec table {
+    width: 100%;
+}
+
+section#billingSec table td { padding: 8px 0; }

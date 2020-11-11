@@ -1,0 +1,239 @@
+<app-header></app-header>
+
+<section class="container py-4">
+    <nav id="toggleMenu" class="d-flex justify-content-between align-items-end">
+        <a class="active"> Unpaid </a>
+        <a href="">Paid</a>
+    </nav>
+    <a (click)="toggleFilter()" class="filterNow"><span class="filter"></span> Filter</a>
+    <div class="p-4" id="filterSec" *ngIf="filter">
+        <div>
+            <owl-carousel [options]="menuOptions" [items]="monthData" [carouselClasses]="['owl-theme', 'row', 'sliding']" *ngIf="monthDataDh">
+                <div class="optionList" [ngClass]="{'active': selectArea === 'Dashboard'}" (click)="sltArea('Dashboard')">
+                        <strong>Dashboard</strong>
+                        <i class="payee"></i>
+                        Rs. {{this.dashTotal}}/-
+                </div>
+                <div class="optionList" [ngClass]="{'active': selectArea === 'Payee'}" (click)="sltArea('Payee')">
+                    <strong>Payee</strong>
+                    <i class="payee"></i>
+                    Rs. {{this.pyTotal}}/-
+                </div>
+                <div class="optionList" [ngClass]="{'active': selectArea === 'Sponsor'}" (click)="sltArea('Sponsor')">
+                    <strong>Sponsor</strong>
+                    <i class="sponsor"></i>
+                    Rs. {{this.spTotal}}/-
+                </div>
+                <div class="optionList" [ngClass]="{'active': selectArea === 'Uploaded'}" (click)="sltArea('Uploaded')">
+                    <strong>Uploaded</strong>
+                    <i class="sponsor"></i>
+                    Rs. {{this.upTotal}}/-
+                </div>
+            </owl-carousel>
+        </div>
+            <owl-carousel [options]="menuOptions" [items]="monthData" [carouselClasses]="['owl-theme', 'row', 'sliding']" *ngIf="monthData">
+                <div class="optionList" *ngIf="monthData[0]" (click)="filterMonthsWeek(0, monthData[0].list)" [ngClass]="{'active': selectMonth === 0}">
+                    <strong>Current Month</strong>
+                    <i class="currentMonth"></i>
+                    Rs. {{monthData[0].price}}/-
+                </div>
+                <div class="optionList" *ngIf="monthData[1]" (click)="filterMonthsWeek(1, monthData[1].list)" [ngClass]="{'active': selectMonth === 1}">
+                    <strong>Last 2 Months</strong>
+                    <i class="lastMonth"></i>
+                    Rs. {{monthData[1].price}}/-
+                </div>
+
+                <div class="optionList" *ngIf="monthData[2]" (click)="filterMonthsWeek(2, monthData[2].list)" [ngClass]="{'active': selectMonth === 2}">
+                    <strong>Last 3 Months</strong>
+                    <i class="lastMonth"></i>
+                    Rs. {{monthData[2].price}}/-
+                </div>
+
+                <div class="optionList" *ngIf="monthData[3]" (click)="filterMonthsWeek(3, monthData[3].list)" [ngClass]="{'active': selectMonth === 3}">
+                    <strong>Last 6 Months</strong>
+                    <i class="lastMonth"></i>
+                    Rs. {{monthData[3].price}}/-
+                </div>
+
+                <div class="optionList" *ngIf="monthData[4]" (click)="filterMonthsWeek(4, monthData[4].list)" [ngClass]="{'active': selectMonth === 4}">
+                    <strong>Last 9 Months</strong>
+                    <i class="lastMonth"></i>
+                    Rs. {{monthData[4].price}}/-
+                </div>
+            </owl-carousel>
+        <div class="">
+            <div class="">
+                {{weekData | json}}
+                <owl-carousel [options]="menuOptions" [items]="weekData" [carouselClasses]="['owl-theme', 'row', 'sliding']">
+                    <div class="optionList" *ngFor="let wk of weekData; let i = index" [ngClass]="{'active': selectWeek == i}" (click)='sltWeek(i)'>
+                        <strong>Week {{i}}</strong>
+                        <i class="week"></i>
+                        Rs. {{wk.price}}/-
+                    </div>
+                </owl-carousel>
+
+            </div>
+        </div>
+        <div class="overScroll">
+            <owl-carousel [options]="menuOptions" [items]="col3Data" [carouselClasses]="['owl-theme', 'row', 'sliding']" *ngIf="col3Data">
+                <div class="optionList" *ngFor="let cl3 of col3Data" [ngClass]="{'active': selectSector === cl3.department}" (click)="sltCustomer(cl3.department)">
+                    <strong>{{cl3.department}}</strong>
+                    <i class="factory"></i>
+                    Rs. {{cl3.price}}/-
+                </div>
+
+                <!-- <div class="optionList" [ngClass]="{'active': selectSector === 'Payee'}" (click)="sltCustomer('Payee')">
+                    <strong>Payee</strong>
+                    <i class="payee"></i>
+                    Rs. {{this.pyTotal}}/-
+                </div>
+                <div class="optionList" [ngClass]="{'active': selectSector === 'Sponsor'}" (click)="sltCustomer('Sponsor')">
+                    <strong>Sponsor</strong>
+                    <i class="sponsor"></i>
+                    Rs. {{this.spTotal}}/-
+                </div> -->
+
+            </owl-carousel>
+        </div>
+        <div class="overScroll">
+            <owl-carousel [options]="menuOptions" [items]="col4Data" [carouselClasses]="['owl-theme', 'row', 'sliding']">
+                <div class="optionList" *ngFor="let c4th of col4Data" [ngClass]="{'active': selectBrand === c4th.brand}" (click)="sltBrand(c4th.brand)">
+                    <strong>{{c4th.brand}}</strong>
+                    <i class="factory"></i>
+                    Rs. {{c4th.price}}/-
+                </div>
+            </owl-carousel>
+        </div>
+    </div>
+</section>
+<section class="container">
+    <nav class="menuBtn d-flex justify-content-between mb-2">
+         <a (click)="openModal(template)" class="btn"><i class="billing"></i> New Bill</a>
+    </nav>
+    <div class="my-3">
+        <owl-carousel *ngIf="selectArea === 'Dashboard'"
+            [options]="cOptions" [items]="billData" [carouselClasses]="['owl-theme', 'row', 'sliding']">
+            <fieldset *ngFor="let bImg of billData; let i = index">
+                <legend>{{bImg.deportment}} {{bImg.genDate | date: 'medium'}} {{bImg.user}}</legend>
+                <nav class="menuBtn d-flex justify-content-between mb-4">
+                    <a (click)="openDelivery(deliveryTemplate, bImg._id)" class="btn"><i class="delivery"></i> Delivery</a>
+                    <a (click)="openSponsor(sponsorTemplate, bImg)" class="btn"><i class="forward"></i> Sponsored My Bill</a>
+                </nav>
+                <img [src]="serverPath+'/pdfBills/images/'+bImg.billImg[0].name" alt="{{bImg.billImg[0].name}}" (click)="showBill(i)" />
+                <nav class="menuBtn d-flex flex-wrap align-items-center justify-content-between">
+                    <form class="d-flex align-items-center justify-content-between ml-auto">
+                        <input type="text" placeholder="Rs." [value]="cleanPrice(bImg.total)" />
+                        <a href="" class="btn">Pay Online</a>
+                    </form>
+                </nav>
+            </fieldset>
+        </owl-carousel>
+        <owl-carousel *ngIf="selectArea !== 'Dashboard' && selectArea !== 'Uploaded'"
+            [options]="cOptions" [items]="billDData" [carouselClasses]="['owl-theme', 'row', 'sliding']">
+            <fieldset *ngFor="let bImg of billDData; let i = index">
+                <legend>{{bImg.billDetails.deportment}} {{bImg.billDetails.genDate | date: 'medium'}} {{bImg.billDetails.user}}</legend>
+                <nav class="menuBtn d-flex justify-content-between mb-4">
+                    <a (click)="openDelivery(deliveryTemplate, bImg._id)" class="btn"><i class="delivery"></i> Delivery</a>
+                </nav>
+                <img [src]="serverPath+'/pdfBills/images/'+bImg.billDetails.billImg[0].name" alt="{{bImg.billDetails.billImg[0].name}}" (click)="showBill(i)" />
+                <nav class="menuBtn d-flex flex-wrap align-items-center justify-content-between">
+                    <form class="d-flex align-items-center justify-content-between ml-auto">
+                        <input type="text" placeholder="Rs." [value]="cleanPrice(bImg.billDetails.total)" />
+                        <a href="" class="btn">Pay Online</a>
+                    </form>
+                </nav>
+            </fieldset>
+        </owl-carousel>
+        <owl-carousel *ngIf="selectArea === 'Uploaded'"
+            [options]="cOptions" [items]="billData" [carouselClasses]="['owl-theme', 'row', 'sliding']">
+            <fieldset *ngFor="let bImg of billData; let i = index">
+                <legend>{{bImg.deportment}} {{bImg.date | date: 'medium'}} {{bImg.user}}</legend>
+                <nav class="menuBtn d-flex justify-content-between mb-4">
+                    <a (click)="openDelivery(deliveryTemplate, bImg._id)" class="btn"><i class="delivery"></i> Delivery</a>
+                </nav>
+                <img [src]="serverPath+'pdfBills/'+bImg.billImg" alt="{{bImg.billImg}}" (click)="showBill(i)" />
+                <nav class="menuBtn d-flex flex-wrap align-items-center justify-content-between">
+                    <form class="d-flex align-items-center justify-content-between ml-auto">
+                        <input type="text" placeholder="Rs." [value]="cleanPrice(bImg.total)" />
+                        <a href="" class="btn">Pay Online</a>
+                    </form>
+                </nav>
+            </fieldset>
+        </owl-carousel>
+    </div>
+</section>
+<!-- <section id="chartSec" class="container my-4 text-center">
+    <img src="/assets/images/pie-chart.jpg" alt="pie chart" />
+</section> -->
+<app-side-bar></app-side-bar>
+
+<ng-template #template>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Scan with your device</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <img src="/assets/images/qr-code.png" alt="qr-code" />
+  </div>
+</ng-template>
+
+<ng-template #sponsorTemplate>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Add Sponsor</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div *ngIf="spMsg" class="alert" [ngClass]="spMsg.alert">{{spMsg.msg}}</div>
+    <ul class="sponsorList">
+        <li *ngFor="let sp of sponsor" class="d-flex justify-content-between align-items-center">
+           <h4>{{sp.sponsorName}} - {{sp.sponsor}}</h4> <a (click)="addSponsor(sp, billId)" class="btn">Send</a>
+        </li>
+    </ul>
+  </div>
+</ng-template>
+
+<ng-template #deliveryTemplate>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Delivered</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div *ngIf="dMsg" class="alert" [ngClass]="dMsg.alert">{{dMsg.msg}}</div>
+    <form [formGroup]="deliveryFrm" (submit)="addDelivery()">
+        <h4>Enter Address</h4>
+        <textarea formControlName="address" ></textarea>
+        <div class="alert alert-danger inputMsg" role="alert" *ngIf="dSubmit && dFrm.address.errors">
+            <div *ngIf="dFrm.address.errors.required">Please mention your delivery address</div>
+        </div>
+        <hr />
+        <h4>Select a payment method</h4>
+        <select formControlName="payMode">
+            <option value="Add Debit/Credit/ATM Card">Add Debit/Credit/ATM Card</option>
+            <option value="Net Banking">Net Banking</option>
+            <option value="PayU Money">PayU Money</option>
+            <option value="POD">POD</option>
+        </select>
+        <div class="alert alert-danger inputMsg" role="alert" *ngIf="dSubmit && dFrm.payMode.errors">
+            <div *ngIf="dFrm.payMode.errors.required">Please mention your payment mode</div>
+        </div>
+        <button type="submit" class="mt-4" [disabled]="dBtm">Send</button>
+    </form>
+  </div>
+</ng-template>
+
+
+
+<section id="billPop" *ngIf="popBill">
+    <aside>
+        <a (click)="showBill(0)" class="close"></a>
+        <img [src]="serverPath+'/pdfBills/images/'+billData[popId].billImg[0].name" alt="{{billData[popId].billImg[0].name}}" />
+    </aside>
+</section>
+
+

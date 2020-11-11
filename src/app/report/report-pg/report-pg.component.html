@@ -1,0 +1,169 @@
+<app-header></app-header>
+<section class="container py-4">
+    <nav id="toggleMenu" class="d-flex justify-content-between align-items-end">
+        <a class="active">
+            Report Debit
+        </a>
+        <a href="">Report Credit</a>
+    </nav>
+    <a (click)="toggleFilter()" class="filterNow"><span class="filter"></span> Filter</a>
+    <div class="p-4" id="filterSec" *ngIf="filter">
+        <div class="overScroll">
+            <div class="optionList d-flex justify-content-between">
+                <div>
+                    <strong>Current Month</strong>
+                    <i class="currentMonth"></i>
+                    Rs. 370
+                </div>
+
+                <div>
+                    <strong>Last 2 Months</strong>
+                    <i class="lastMonth"></i>
+                    Rs. 370
+                </div>
+
+                <div>
+                    <strong>Last 3 Months</strong>
+                    <i class="lastMonth"></i>
+                    Rs. 370
+                </div>
+
+                <div>
+                    <strong>Last 6 Months</strong>
+                    <i class="lastMonth"></i>
+                    Rs. 370
+                </div>
+
+                <div>
+                    <strong>Last 9 Months</strong>
+                    <i class="lastMonth"></i>
+                    Rs. 370
+                </div>
+            </div>
+        </div>
+        <div class="overScroll">
+            <div class="optionList d-flex justify-content-between">
+                <div>
+                    <strong>Factory</strong>
+                    <i class="factory"></i>
+                    Rs. 370
+                </div>
+                <div>
+                    <strong>Factory1</strong>
+                    <i class="factory"></i>
+                    Rs. 370
+                </div>
+                <div>
+                    <strong>Factory2</strong>
+                    <i class="factory"></i>
+                    Rs. 370
+                </div>
+                <div>
+                    <strong>Factory3</strong>
+                    <i class="factory"></i>
+                    Rs. 370
+                </div>
+                <div>
+                    <strong>Factory4</strong>
+                    <i class="factory"></i>
+                    Rs. 370
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="container" id="toggleMenu">
+    <aside class="p4">
+        <a (click)="toggleLine()">Line Chart</a>
+        <div class="text-center" *ngIf="lineSec">
+            <img src="/assets/images/line-chart.png" alt="line chart" />
+        </div>
+        <a (click)="togglePie()">Pie Chart</a>
+        <div class="text-center" *ngIf="pieSec">
+            <img src="/assets/images/pie-chart.jpg" alt="pie chart" />
+        </div>
+        <a (click)="togglePurchase()">Top 15 Item Purchase</a>
+        <div *ngIf="purchaseSec">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Bill Id</th>
+                        <th>Item</th>
+                        <th>Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>12345</td>
+                        <td>Leather Shoe</td>
+                        <td>Rs. 5000/-</td>
+                    </tr>
+                    <tr>
+                        <td>12345</td>
+                        <td>Leather Shoe</td>
+                        <td>Rs. 5000/-</td>
+                    </tr>
+                    <tr>
+                        <td>12345</td>
+                        <td>Leather Shoe</td>
+                        <td>Rs. 5000/-</td>
+                    </tr>
+                    <tr>
+                        <td>12345</td>
+                        <td>Leather Shoe</td>
+                        <td>Rs. 5000/-</td>
+                    </tr>
+                    <tr>
+                        <td>12345</td>
+                        <td>Leather Shoe</td>
+                        <td>Rs. 5000/-</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <a (click)="togglePrice()">Top 15 Price</a>
+        <div *ngIf="priceSec">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Bill Id</th>
+                        <th>Item</th>
+                        <th>Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>12345</td>
+                        <td>Leather Shoe</td>
+                        <td>Rs. 5000/-</td>
+                    </tr>
+                    <tr>
+                        <td>12345</td>
+                        <td>Leather Shoe</td>
+                        <td>Rs. 5000/-</td>
+                    </tr>
+                    <tr>
+                        <td>12345</td>
+                        <td>Leather Shoe</td>
+                        <td>Rs. 5000/-</td>
+                    </tr>
+                    <tr>
+                        <td>12345</td>
+                        <td>Leather Shoe</td>
+                        <td>Rs. 5000/-</td>
+                    </tr>
+                    <tr>
+                        <td>12345</td>
+                        <td>Leather Shoe</td>
+                        <td>Rs. 5000/-</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </aside>
+</section>
+
+
+
+<app-side-bar></app-side-bar>

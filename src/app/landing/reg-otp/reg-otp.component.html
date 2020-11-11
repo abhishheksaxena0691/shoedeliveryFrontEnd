@@ -1,0 +1,19 @@
+<section class="d-flex justify-content-center align-items-center">
+    <aside>
+        <div class="p-4">
+            <h1>Verify Your Account</h1>
+            <div *ngIf="pgMsg" class="alert" [ngClass]="pgMsg.alert">{{pgMsg.msg}}</div>
+            <form [formGroup]="regFrm" (submit)="verifyOn()">
+                <h4>OTP</h4>
+                <input type="text" formControlName="otp" />
+                <div class="alert alert-danger inputMsg" role="alert" *ngIf="frmSubmit && autoFrm.otp.errors">
+                    <div *ngIf="autoFrm.otp.errors.required">Please mention your username</div>
+                </div>
+                
+                <button type="submit" [disabled]="frmBtm">Verify</button>
+                <hr />
+                <h3>Not yet get the code? <a >Resend</a></h3>
+            </form>
+        </div>
+    </aside>
+</section>

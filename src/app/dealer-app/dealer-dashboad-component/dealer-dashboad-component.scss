@@ -1,0 +1,239 @@
+@import '../../../assets/scss/lib.scss';
+
+section#chartSec { background-color: #ffffff; }
+
+section#chartSec img{ max-width: 100%; }
+
+section#billPop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 500;
+    background-color: rgba(0,0,0,0.5);
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    justify-content: center;
+}
+
+section#billPop aside {
+    background-color: #ffffff;
+    padding: 10px;
+    width: 95%;
+    max-width: 450px;
+    text-align: center;
+    position: relative;
+}
+
+section#billPop aside { max-width: 600px; }
+
+section#billPop aside img { width: 100%; }
+
+section#billPop aside a.close {
+    cursor: pointer;
+    top: 5px;
+    right: 5px;
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-image: url('/assets/icons/close.svg');
+}
+
+div.modal-body img { width: 100%; }
+
+fieldset {
+    border: #AA0000 solid thin;
+    border-radius: 5px;
+    padding: 8px;
+    margin: 10px 0;
+}
+
+fieldset legend { font-size: 15px; }
+
+ul.sponsorList li { list-style: none; margin: 5px 0; }
+
+ul.sponsorList li h4 {
+    font-size: 15px;
+    color: #252525;
+}
+
+ul.sponsorList li a.btn {
+    background-color: #AA0000;
+    color: #ffffff;
+    padding: 3px 15px;
+    cursor: pointer;
+}
+
+.modal-body h4 {
+    font-size: 14px;
+    color: #686868;
+    margin-top: 8px;
+}
+
+.modal-body input[type=text],
+.modal-body textarea,
+.modal-body select {
+    width: 100%;
+    padding: 5px 8px;
+    border-radius: 5px;
+    border: #ccc solid thin;
+    background-color: #ffffff;
+}
+
+.modal-body textarea {
+    height: 80px;
+    resize: none;
+}
+
+.modal-body button[type=submit] {
+    margin-top: 8px;
+    background-color: #AA0000;
+    color: #ffffff;
+    padding: 3px 20px;
+    border-radius: 5px;
+    border: none;
+}
+
+.setWidth {
+  width: 100%;
+}
+
+body{
+  background:#eee;
+  margin-top:20px;
+}
+.hori-timeline .events {
+  border-top: 3px solid #e9ecef;
+}
+.hori-timeline .events .event-list {
+  display: block;
+  position: relative;
+  text-align: center;
+  padding-top: 70px;
+  margin-right: 0;
+}
+.hori-timeline .events .event-list:before {
+  content: "";
+  position: absolute;
+  height: 36px;
+  top: 0;
+}
+.hori-timeline .events .event-list .event-date {
+  position: absolute;
+  top: 38px;
+  left: 0;
+  right: 0;
+  width: 75px;
+  margin: 0 auto;
+  border-radius: 4px;
+  padding: 2px 4px;
+}
+@media (min-width: 1140px) {
+  .hori-timeline .events .event-list {
+      display: inline-block;
+      width: 24%;
+      padding-top: 45px;
+  }
+  .hori-timeline .events .event-list .event-date {
+      top: -12px;
+  }
+}
+.bg-soft-primary {
+  background-color: rgba(64,144,203,.3)!important;
+}
+.bg-soft-success {
+  background-color: rgba(71,189,154,.3)!important;
+}
+.bg-soft-danger {
+  background-color: rgba(231,76,94,.3)!important;
+}
+.bg-soft-warning {
+  background-color: rgba(249,213,112,.3)!important;
+}
+.card {
+  border: none;
+  margin-bottom: 24px;
+  // -webkit-box-shadow: 0 0 13px 0 rgba(236,236,241,.44);
+  // box-shadow: 0 0 13px 0 rgba(236,236,241,.44);
+}
+
+.container {
+
+}
+
+.line {
+  width: 100%;
+  background: blue;
+  margin: 50px 0;
+  height: 5px;
+}
+
+.top,
+.bottom {
+  display: flex;
+  flex-direction: row;
+}
+
+.bottom {
+  padding-left: 50px;
+}
+
+.top .top-element,
+.bottom .bottom-element {
+  padding: 0 25px;
+  position: relative;
+}
+
+.top-element:before,
+.bottom-element:before {
+  content: "I";
+  height: 20px;
+  width: 20px;
+  line-height: 20px;
+  text-align: center;
+  border-radius: 50%;
+  background: #C33900;
+  color: white;
+  position: absolute;
+  left: 0;
+}
+
+.top-element:before {
+  bottom: -63px;
+}
+
+.bottom-element:before {
+  top: -63px;
+}
+
+.top-element:after,
+.bottom-element:after {
+  content: "";
+  height: 10px;
+  width: 2px;
+  background: #8ACCC6;
+  position: absolute;
+}
+
+.top-element:after {
+  left: 10px;
+  bottom: -40px;
+}
+
+.bottom-element:after {
+  left: 10px;
+  top: -20px;
+}
+.setBoarder {
+  border-bottom: 2px dashed #000;
+  padding-bottom: 10px;
+}
+
+.nonActicebutton {
+  background-color: #107438 !important;
+}

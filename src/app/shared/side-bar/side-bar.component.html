@@ -1,0 +1,60 @@
+<div id="menuGap"></div>
+<ng-container *ngIf="userType == 2">
+<nav>
+    <div class="container d-flex justify-content-between">
+        <a routerLink="/dashboard" routerLinkActive="active">
+            <span class="dashboard"></span>
+            Dashboard
+        </a>
+        <a routerLink="/report" routerLinkActive="active">
+            <span class="report"></span>
+            Report
+        </a>
+        <a routerLink="/missing" routerLinkActive="active">
+            <span class="help"></span>
+            Missing
+        </a>
+        <a routerLink="/return" routerLinkActive="active">
+            <span class="return"></span>
+            Return
+        </a>
+        <a routerLink="/delivery" routerLinkActive="active">
+            <span class="delivery"></span>
+            Delivery
+        </a>
+        <a routerLink="/quote" routerLinkActive="active">
+            <span class="quote"></span>
+            Quote
+        </a>
+    </div>
+</nav>
+</ng-container>
+<ng-container *ngIf="userType == 1">
+  <nav>
+      <div class="container d-flex justify-content-between">
+          <a routerLink="/dealer/dashboard" routerLinkActive="active">
+              <span class="dashboard"></span>
+              Dashboard
+          </a>
+          <a routerLink="/report" routerLinkActive="active">
+
+
+          </a>
+          <a routerLink="/missing" routerLinkActive="active">
+
+          </a>
+          <a routerLink="/dealer/moveToCredit" routerLinkActive="active">
+            <span class="delivery"></span>
+            Credit
+          </a>
+          <a routerLink="/dealer/delivery" routerLinkActive="active">
+              <span class="delivery"></span>
+              Delivery
+          </a>
+          <a routerLink="/quote" routerLinkActive="active">
+
+          </a>
+      </div>
+  </nav>
+  </ng-container>
+

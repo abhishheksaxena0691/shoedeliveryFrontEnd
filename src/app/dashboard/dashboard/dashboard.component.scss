@@ -1,0 +1,100 @@
+@import '../../../assets/scss/lib.scss';
+
+section#chartSec { background-color: #ffffff; }
+
+section#chartSec img{ max-width: 100%; }
+
+section#billPop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 500;
+    background-color: rgba(0,0,0,0.5);
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    justify-content: center;
+}
+
+section#billPop aside {
+    background-color: #ffffff;
+    padding: 10px;
+    width: 95%;
+    max-width: 450px;
+    text-align: center;
+    position: relative;
+}
+
+section#billPop aside { max-width: 600px; }
+
+section#billPop aside img { width: 100%; }
+
+section#billPop aside a.close {
+    cursor: pointer;
+    top: 5px;
+    right: 5px;
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-image: url('/assets/icons/close.svg');
+}
+
+div.modal-body img { width: 100%; }
+
+fieldset {
+    border: #AA0000 solid thin;
+    border-radius: 5px;
+    padding: 8px;
+    margin: 10px 0;
+}
+
+fieldset legend { font-size: 15px; }
+
+ul.sponsorList li { list-style: none; margin: 5px 0; }
+
+ul.sponsorList li h4 {
+    font-size: 15px;
+    color: #252525;
+}
+
+ul.sponsorList li a.btn {
+    background-color: #AA0000;
+    color: #ffffff;
+    padding: 3px 15px;
+    cursor: pointer;
+}
+
+.modal-body h4 {
+    font-size: 14px;
+    color: #686868;
+    margin-top: 8px;
+}
+
+.modal-body input[type=text],
+.modal-body textarea,
+.modal-body select {
+    width: 100%;
+    padding: 5px 8px;
+    border-radius: 5px;
+    border: #ccc solid thin;
+    background-color: #ffffff;
+}
+
+.modal-body textarea {
+    height: 80px;
+    resize: none;
+}
+
+.modal-body button[type=submit] {
+    margin-top: 8px;
+    background-color: #AA0000;
+    color: #ffffff;
+    padding: 3px 20px;
+    border-radius: 5px;
+    border: none;
+}

@@ -1,0 +1,12 @@
+<header class="py-3">
+    <div class="container">
+        <div class="d-flex align-items-center justify-content-between">
+            <a href="" id="logo">Logo</a>
+            <a (click)="toggleMenu()" id="dotMenu"></a>
+        </div>
+        <nav *ngIf="popMenu" (click)="toggleMenu()">
+            <a routerLink="/profile">My Profile</a>
+            <a (click)="logout()">Logout</a>
+        </nav>
+    </div>
+</header>

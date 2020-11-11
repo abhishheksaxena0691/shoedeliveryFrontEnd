@@ -1,0 +1,277 @@
+section#profInfo {
+    background-color: #ffffff;
+}
+
+section#profInfo span.picImg {
+    display: inline-block;
+    width: 180px;
+    height: 200px;
+    background-color: #f2f2f2;
+}
+
+section#profInfo p { color: #989898; }
+
+section#profInfo p a { color: #aa0000; cursor: pointer; }
+
+section#profInfo p strong {
+    margin-right: 8px;
+    color: #686868;
+}
+
+section#infoSec,
+section#pwdSec {
+    background-color: #ffffff;
+}
+
+section#pwdSec h3,
+section#infoSec h3 {
+    font-size: 22px;
+    margin-bottom: 20px;
+}
+
+section#infoSec h4,
+section#pwdSec h4,
+section#uploadSec h4 {
+    font-size: 14px;
+    font-weight: bold;
+    color: #999999;
+}
+
+section#uploadSec img { height: 250px; }
+
+section#uploadSec input[type=date],
+section#uploadSec input[type=text],
+section#uploadSec select,
+section#pwdSec input[type=password],
+section#infoSec input[type=text],
+section#infoSec input[type=email] {
+    font-size: 15px;
+    width: 100%;
+    padding: 5px 8px;
+    margin-bottom: 20px;
+    border: #ccc solid thin;
+    border-radius: 3px;
+}
+
+input[type=file] { display: none; }
+
+label#billLabel {
+    text-align: center;
+    font-size: 20px;
+    color: #383838;
+    cursor: pointer;
+    border: #686868 dashed 2px;
+    border-radius: 8px;
+    display: inline-block;
+    width: 100%;
+    padding: 50px 0;
+}
+
+section#uploadSec button[type=submit],
+div.modal-body button[type=submit],
+section#uploadSec .btn,
+section#infoSec button[type=submit],
+section#pwdSec button[type=submit] {
+    width: 100%;
+    border: none;
+    border-radius: 3px;
+    background-color: #aa0000;
+    color: #ffffff;
+    padding: 5px 0;
+    font-size: 15px;
+    margin-top: 25px;
+}
+
+section#uploadSec .btn {
+    width: auto;
+    padding: 5px 20px;
+    margin: 0 0 0 5px;
+}
+
+div#paidSec {
+    margin: 10px 0; background-color: #f2f2f2;
+    padding: 20px;
+}
+
+div#paidSec img { width: 100%; }
+
+section.paySec,
+section#creditSec div.p-4,
+section#uploadSec {
+    background-color: #ffffff;
+}
+
+section#creditSec h2,
+section#uploadSec h2 {
+    font-size: 22px;
+    margin-bottom: 10px;
+}
+
+section.paySec table,
+section#creditSec table,
+section#uploadSec table { width: 100%; }
+
+section.paySec table thead th,
+section#creditSec table thead th,
+section#uploadSec table thead th {
+    background-color: #aa0000;
+    color: #ffffff;
+    padding: 5px;
+}
+
+section#creditSec table thead td,
+section.paySec table tbody td,
+section#uploadSec table tbody td {
+    padding: 10px 5px;
+}
+
+section.paySec table tbody td a.btn,
+section.paySec table tbody td a.btn {
+    background-color: #aa0000;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: bold;
+    padding: 3px 8px;
+}
+
+table.clickable tbody tr:hover td {
+    background-color: #aa000085;
+    cursor: pointer;
+}
+
+section.toggleMenu a.tMenu {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 5px;
+    background-color: rgb(170,0,0);
+    color: #ffffff;
+    padding: 5px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+section.toggleMenu a.tMenu::after {
+    position: absolute;
+    content: '';
+    right: 10px;
+    top: 10px;
+    width: 15px;
+    height: 15px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-image: url('/assets/icons/down-arrow.svg');
+}
+
+section.toggleMenu div {
+    background-color: #ffffff;
+    border-radius: 5px;
+    padding: 8px;
+}
+
+ul#colList li {
+    list-style: none;
+    background-color: #fff;
+    margin: 8px 0;
+    -webkit-box-shadow: 0 0 3px 0 #C7C7C7;
+    box-shadow: 0 0 3px 0 #C7C7C7;
+}
+
+ul#colList li div.colBody { display: none; }
+
+ul#colList li h2 {
+    padding: 8px 15px;
+    font-size: 18px;
+    color: #AA0000;
+    cursor: pointer;
+    display: flex;
+    flex-flow: row nowrap;
+    
+}
+
+ul#colList li.active h2 {
+    background-color: #AA0000;
+    color: #ffffff;
+}
+
+ul#colList li.active div.colBody { display: block; }
+
+div.usrList { margin: 20px 0; }
+
+div.usrList a {
+    width: 100px;
+    font-size: 14px;
+    margin: 0 10px;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: #AA0000;
+    text-decoration: none;
+    padding: 8px ;
+    background-color: #e8e8e8;
+    border-radius: 5px;
+    position: relative;
+    transition: 0.2s all linear;
+}
+
+div.usrList a i {
+    position: absolute;
+    cursor: pointer;
+    width: 25px;
+    height: 25px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+div.usrList a i.del {
+    right: -15px;
+    top: -5px;
+    background-image: url('/assets/icons/delete.svg');
+}
+
+div.usrList a i.apr {
+    right: -15px;
+    bottom: -5px;
+    background-image: url('/assets/icons/approved.svg');
+}
+
+div.usrList a span {
+    width: 70px;
+    height: 70px;
+    margin: 5px 0;
+    display: inline-block;
+    border-radius: 100%;
+    background-color: #fff;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+div.usrList a:hover {
+    background-color: #AA0000;
+    color: #ffffff;
+}
+
+div.modal-body h4 {
+    font-size: 16px;
+    margin-top: 10px;
+}
+
+div.modal-body input[type=text] {
+    width: 100%;
+    border-radius: 5px;
+    padding: 5px 8px;
+    border: #dcdcdc solid thin;
+}
+
+fieldset {
+    border-radius: 5px;
+    padding: 8px;
+    margin: 10px 0;
+}
+
+fieldset legend { font-size: 15px; color: #AA0000; }

@@ -1,0 +1,141 @@
+<app-header></app-header>
+<section class="container py-4">
+    <nav id="toggleMenu" class="d-flex justify-content-between align-items-end">
+        <a class="active"> Return Debit </a>
+        <a href="">Return Credit</a>
+    </nav>
+    <a (click)="toggleFilter()" class="filterNow"><span class="filter"></span> Filter</a>
+    <div class="p-4" id="filterSec" *ngIf="filter">
+        <div class="overScroll">
+            <div class="optionList d-flex justify-content-between">
+                <div>
+                    <strong>Current Month</strong>
+                    <i class="currentMonth"></i>
+                    Rs. 370
+                </div>
+
+                <div>
+                    <strong>Last 2 Months</strong>
+                    <i class="lastMonth"></i>
+                    Rs. 370
+                </div>
+
+                <div>
+                    <strong>Last 3 Months</strong>
+                    <i class="lastMonth"></i>
+                    Rs. 370
+                </div>
+
+                <div>
+                    <strong>Last 6 Months</strong>
+                    <i class="lastMonth"></i>
+                    Rs. 370
+                </div>
+
+                <div>
+                    <strong>Last 9 Months</strong>
+                    <i class="lastMonth"></i>
+                    Rs. 370
+                </div>
+            </div>
+        </div>
+        <div class="overScroll">
+            <div class="optionList d-flex justify-content-between">
+                <div>
+                    <strong>Week</strong>
+                    <i class="week"></i>
+                    Rs. 370
+                </div>
+                <div>
+                    <strong>Week 1</strong>
+                    <i class="week"></i>
+                    Rs. 370
+                </div>
+                <div>
+                    <strong>Week 2</strong>
+                    <i class="week"></i>
+                    Rs. 370
+                </div>
+                <div>
+                    <strong>Week 3</strong>
+                    <i class="week"></i>
+                    Rs. 370
+                </div>
+                <div>
+                    <strong>Week 4</strong>
+                    <i class="week"></i>
+                    Rs. 370
+                </div>
+            </div>
+        </div>
+        <div class="overScroll">
+            <div class="optionList d-flex justify-content-between">
+                <div>
+                    <strong>Factory</strong>
+                    <i class="factory"></i>
+                    Rs. 370
+                </div>
+                <div>
+                    <strong>Factory1</strong>
+                    <i class="factory"></i>
+                    Rs. 370
+                </div>
+                <div>
+                    <strong>Factory2</strong>
+                    <i class="factory"></i>
+                    Rs. 370
+                </div>
+                <div>
+                    <strong>Factory3</strong>
+                    <i class="factory"></i>
+                    Rs. 370
+                </div>
+                <div>
+                    <strong>Factory4</strong>
+                    <i class="factory"></i>
+                    Rs. 370
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="container my-4" id="billingSec">
+    <div class="p-4">
+        <table class="">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Bill Id</th>
+                    <th>Total Item</th>
+                    <th>Amount Received</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><input type="checkbox"></td>
+                    <td>1234</td>
+                    <td>12</td>
+                    <td>Rs. 120/-</td>
+                    <td>Return</td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox"></td>
+                    <td>1244</td>
+                    <td>15</td>
+                    <td>Rs. 125/-</td>
+                    <td>Return</td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox"></td>
+                    <td>1235</td>
+                    <td>15</td>
+                    <td>Rs. 1210/-</td>
+                    <td>Return</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+<app-side-bar></app-side-bar>

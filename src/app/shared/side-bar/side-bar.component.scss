@@ -1,0 +1,64 @@
+@import '../../../assets/scss/lib.scss';
+
+#menuGap { height: 100px; }
+
+nav {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 500;
+    background-color: #ffffff;
+    padding: 5px 0;
+    -webkit-box-shadow: 0 -2px 3px 0 #C4C4C4;
+    box-shadow: 0 -2px 3px 0 #C4C4C4;
+}
+a {
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    font-size: 10px;
+    font-weight: bold;
+    flex-flow: column nowrap;
+    color: #686868 !important;
+    cursor: pointer;
+    padding: 5px 8px;
+    background-color: transparent;
+    transition: 0.2s all linear;
+    width: 25px;
+    @include sm  { width: 35px; font-size: 13px; }
+}
+
+a span {
+    width: 25px;
+    height: 25px;
+    margin-bottom: 3px;
+    border-radius: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 60%;
+    border: rgb(170, 0, 0) solid 2px;
+    transition: 0.2s all linear;
+    filter: grayscale(100%) brightness(300%);
+
+    @include sm {
+        width: 35px;
+        height: 35px;
+    }
+}
+
+a span.dashboard { background-image: url('/assets/icons/dashboard.svg'); }
+a span.report { background-image: url('/assets/icons/report.svg'); }
+a span.help { background-image: url('/assets/icons/help.svg'); }
+a span.return { background-image: url('/assets/icons/return.svg'); }
+a span.delivery { background-image: url('/assets/icons/delivery.svg'); }
+a span.quote { background-image: url('/assets/icons/quotation.svg'); }
+
+a.active,
+a:hover {
+    text-decoration: none;
+    color: rgb(170, 0, 0) !important;
+}
+
+a.active span,
+a:hover span { filter: grayscale(0%) brightness(100%); }

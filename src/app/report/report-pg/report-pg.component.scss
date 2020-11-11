@@ -1,0 +1,43 @@
+
+section#toggleMenu a {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 5px;
+    background-color: rgb(170,0,0);
+    color: #ffffff;
+    padding: 5px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+section#toggleMenu a::after {
+    position: absolute;
+    content: '';
+    right: 10px;
+    top: 10px;
+    width: 15px;
+    height: 15px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-image: url('/assets/icons/down-arrow.svg');
+}
+
+section#toggleMenu div {
+    background-color: #ffffff;
+    border-radius: 5px;
+    padding: 8px;
+}
+
+section#toggleMenu div img { max-width: 100%; }
+
+
+section#toggleMenu div table { width: 100%; text-align: center; }
+
+section#toggleMenu div table td {
+    padding: 5px 0;
+    border-top: #ccc solid thin;
+    border-bottom: #ccc solid thin;
+}

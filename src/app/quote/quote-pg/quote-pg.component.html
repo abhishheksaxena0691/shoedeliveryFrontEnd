@@ -1,0 +1,53 @@
+<app-header></app-header>
+<section class="container py-4">
+    <nav id="toggleMenu" class="d-flex justify-content-between align-items-end">
+        <a class="active"> Dashboard </a>
+        <a href="">Favorites</a>
+    </nav>
+    <a (click)="toggleFilter()" class="filterNow"><span class="filter"></span> Filter</a>
+    <div class="p-4" id="filterSec" *ngIf="filter">
+        <div *ngIf="qList">
+            <owl-carousel [options]="menuOptions" [items]="monthData" [carouselClasses]="['owl-theme', 'row', 'sliding']">
+                <div class="optionList" *ngIf="monthData[0]" (click)="filterPyMonthsWeek(0, monthData[0].list)" [ngClass]="{'active': selectPyMonth === 0}">
+                    <strong>Current Month</strong>
+                    <i class="currentMonth"></i>
+                    Rs. {{monthData[0].price}}/-
+                </div>
+
+                <div class="optionList" *ngIf="monthData[1]" (click)="filterPyMonthsWeek(1, monthData[1].list)" [ngClass]="{'active': selectPyMonth === 1}">
+                    <strong>Last 2 Months</strong>
+                    <i class="lastMonth"></i>
+                    Rs. {{monthData[1].price}}/-
+                </div>
+
+                <div class="optionList" *ngIf="monthData[2]" (click)="filterPyMonthsWeek(2, monthData[2].list)" [ngClass]="{'active': selectPyMonth === 2}">
+                    <strong>Last 3 Months</strong>
+                    <i class="lastMonth"></i>
+                    Rs. {{monthData[2].price}}/-
+                </div>
+
+                <div class="optionList" *ngIf="monthData[3]" (click)="filterPyMonthsWeek(3, monthData[3].list)" [ngClass]="{'active': selectPyMonth === 3}">
+                    <strong>Last 6 Months</strong>
+                    <i class="lastMonth"></i>
+                    Rs. {{monthData[3].price}}/-
+                </div>
+
+                <div class="optionList" *ngIf="monthData[4]" (click)="filterPyMonthsWeek(4, monthData[4].list)" [ngClass]="{'active': selectPyMonth === 4}">
+                    <strong>Last 9 Months</strong>
+                    <i class="lastMonth"></i>
+                    Rs. {{monthData[4].price}}/-
+                </div>
+            </owl-carousel>
+        </div>
+    </div>
+</section>
+
+<section class="container text-center menuBtn">
+    <a routerLink="/quote/new" class="btn">Create New Quote</a>
+    <nav class="d-flex justify-content-between mb-4">
+        <a (click)="openDelivery(deliveryTemplate, bImg._id)" class="btn"> Proceed to Order</a>
+        <a (click)="openDelivery(deliveryTemplate, bImg._id)" class="btn"> Move to Favorites</a>
+    </nav>
+</section>
+
+<app-side-bar></app-side-bar>

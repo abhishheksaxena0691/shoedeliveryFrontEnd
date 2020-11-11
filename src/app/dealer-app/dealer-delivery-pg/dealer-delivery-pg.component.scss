@@ -1,0 +1,103 @@
+div#filterSec {
+    background-color: #fff;
+    border-radius: 0 0 8px 8px;
+}
+
+div#filterSec h4 {
+    font-size: 15px;
+    font-weight: bold;
+    color: rgb(170,0,0);
+    margin: 20px 0 1px 0;
+}
+
+div.optionList {
+    margin: 5px 0;
+}
+
+div.optionList label {
+    width: 150px;
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    cursor: pointer;
+}
+
+div.optionList label input[type=radio] { margin-right: 10px; }
+
+section#deliverySec { background-color: #ffffff; }
+
+section#deliverySec h3 {
+    font-size: 22px;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+section#deliverySec p {
+    margin: 3px 0;
+}
+
+div#shipTrack i {
+    width: 20px;
+    height: 20px;
+    border-radius: 100%;
+    background-color: #E2E2E2;
+}
+
+div#shipTrack i.active { background-color: #AA0000; }
+
+div#shipTrack span {
+    width: 130px;
+    border-top: #E2E2E2 solid 5px;
+}
+
+.shipTrack1 {
+  border-top: #AA0000 solid 5px !important;
+}
+
+div#shipTrack h3 {
+    color: #aa0000;
+    font-size: 18px;
+}
+
+fieldset {
+    border-radius: 5px;
+    padding: 8px;
+    margin: 10px 0;
+}
+
+fieldset legend { font-size: 15px; color: #AA0000; }
+
+.buttonClass {
+  background-color: #AA0000;
+  color: #ffffff;
+  padding: 3px 15px;
+  cursor: pointer;
+  border: none;
+}
+div#shipTrack i {
+  width: 20px;
+  height: 20px;
+  border-radius: 100%;
+  background-color: #E2E2E2;
+}
+
+div#shipTrack i.active { background-color: #AA0000; }
+
+div#shipTrack span {
+  width: 130px;
+  border-top: #E2E2E2 solid 5px;
+}
+
+div#shipTrack h3 {
+  color: #aa0000;
+  font-size: 18px;
+}
+
+.shipTrack2 {
+  border-top: none !important;
+
+}
+
+.setAlign {
+  text-align: center;
+}

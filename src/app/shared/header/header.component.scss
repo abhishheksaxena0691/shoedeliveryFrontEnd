@@ -1,0 +1,38 @@
+header a#logo {
+    font-size: 20px;
+    color: #aa0000;
+}
+
+header div.container {
+    position: relative;
+}
+
+header a#dotMenu {
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-image: url('/assets/icons/menu.svg');
+}
+
+header nav {
+    position: absolute;
+    z-index: 500;
+    right: 15px;
+    background-color: #ffffff;
+    padding: 8px;
+    border-radius: 3px;
+    -webkit-box-shadow: 0 2px 5px 0 #CCCCCC;
+    box-shadow: 0 2px 5px 0 #CCCCCC;
+}
+
+header nav a {
+    cursor: pointer;
+    display: inline-block;
+    width: 100%;
+    margin: 5px 0;
+    text-decoration: none;
+    color: #aa0000;
+}
