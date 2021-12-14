@@ -3,9 +3,9 @@
     <aside>
       <div class="card-header">
         <ul class="nav nav-tabs card-header-tabs">
-          <li class="nav-item" (click)="setUser(2)">
+          <!-- <li class="nav-item" (click)="setUser(2)">
             <a class="nav-link" [ngClass]="logFrm.value.userType === 2 ? 'active': ' disabled'" href="#">Retailer</a>
-          </li>
+          </li> -->
 
           <li class="nav-item" (click)="setUser(1)">
             <a class="nav-link" [ngClass]="logFrm.value.userType === 1 ? 'active': ' disabled'" href="#">Dealer</a>
@@ -13,8 +13,8 @@
         </ul>
       </div>
         <div class="p-4">
-            <h1 *ngIf="logFrm.value.userType === 2">Retailer Login</h1>
-            <h1 *ngIf="logFrm.value.userType === 1">Dealer Login</h1>
+
+            <h1>Merchant Login</h1>
             <div *ngIf="logMsg" class="alert" [ngClass]="logMsg.alert">{{logMsg.msg}}</div>
             <form [formGroup]="logFrm" (submit)="logOn()">
                 <h4>Mobile No.</h4>

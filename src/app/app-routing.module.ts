@@ -48,11 +48,15 @@ const routes: Routes = [
     path: "",
     loadChildren: ()=>import('./dealer-app/dealer-app.module').then(m=>m.DealerAppModule),
     canActivate: [AuthGuard]
-  }
+  },
+  {
+    path: "",
+    loadChildren: ()=>import('./shoping/shoping.module').then(m=>m.ShopingModule)
+  },
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes,  { useHash: true })],
+  imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

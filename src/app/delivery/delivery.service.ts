@@ -18,18 +18,37 @@ export class DeliveryService {
   });
 
   getAllDelivery() {
-    return this.http.get(this.api.server+"delivery/all", {headers: this.headers});
+    const token = this.auth.getLogged();
+    const dupheaders = new HttpHeaders({
+                        'Content-Type': "application/json",
+                        'Authorization': token
+                      });
+    return this.http.get(this.api.server+"delivery/all", {headers: dupheaders});
   }
 
   updatepaymentMode(data: any) {
-    return this.http.post(this.api.server+"delivery/updatePaymentMode", data, {headers: this.headers});
+    const token = this.auth.getLogged();
+    const dupheaders = new HttpHeaders({
+                          'Content-Type': "application/json",
+                          'Authorization': token
+                        });
+    return this.http.post(this.api.server+"delivery/updatePaymentMode", data, {headers: dupheaders});
   }
 
   generateImageNewInvoice (data: any) {
-    return this.http.post(this.api.server+"bill/uploadGeneratedBills", data, {headers: this.headers});
+    const token = this.auth.getLogged();
+    const dupheaders = new HttpHeaders({
+                                        'Content-Type': "application/json",
+                                        'Authorization': token
+                                      });
+    return this.http.post(this.api.server+"bill/uploadGeneratedBills", data, {headers: dupheaders});
   }
   moveToDelivery (data) {
-    return this.http.post(this.api.server+"delivery/moveToDelivery", data,  {headers: this.headers});
-
+    const token = this.auth.getLogged();
+    const dupheaders = new HttpHeaders({
+                                        'Content-Type': "application/json",
+                                        'Authorization': token
+                                      });
+    return this.http.post(this.api.server+"delivery/moveToDelivery", data,  {headers: dupheaders});
   }
 }

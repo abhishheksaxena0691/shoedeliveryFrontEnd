@@ -1,3 +1,4 @@
+import { AuthService } from './../../guard/auth.service';
 import { Component, OnInit,TemplateRef } from '@angular/core';
 import { DashboardService } from '../dashboard.service';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
@@ -81,7 +82,7 @@ export class DashboardComponent implements OnInit {
   col4Data: col4Type[] = [];
   col3Data: col3Type[] = [];
 
-  constructor(private formBuilder: FormBuilder, private fetch: DashboardService, private modalService: BsModalService, private filterSrv: FilterService) { }
+  constructor(private formBuilder: FormBuilder, private fetch: DashboardService, private modalService: BsModalService, private filterSrv: FilterService, private auth: AuthService) { }
 
   serverPath: string = this.fetch.serverPath;
 
@@ -237,7 +238,7 @@ export class DashboardComponent implements OnInit {
   }
 
   getProfileInfo():void {
-    this.fetch.getProfInfo().subscribe(
+    this.fetch.getProfInfo(this.auth.getLogged()).subscribe(
       res => { this.profInfo = res; },
       err => { this.pgMsg = {msg: err.error, alert: 'alert-danger'}; }
     )
@@ -418,7 +419,7 @@ export class DashboardComponent implements OnInit {
       return;
     } else {
       let formObj = this.deliveryFrm.getRawValue();
-
+      formObj['']
       this.fetch.addDelivery(formObj).subscribe(
         res => {
           this.dMsg = {msg: res, alert: 'alert-success'};

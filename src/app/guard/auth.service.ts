@@ -9,19 +9,22 @@ export class AuthService {
 
   constructor(private route: Router, @Inject(PLATFORM_ID) private platformId: Object) { }
 
-  sendToken(token: string, usrFNm: string, userType: string) {
+  sendToken(token: string, usrFNm: string, companyName:string, domain:string, userType: string) {
     console.log(this.platformId);
-      if (isPlatformBrowser(this.platformId)) {
+    localStorage.removeItem("shoeRetailUsr");
+    localStorage.removeItem("shoeRetailUsrNm");
         localStorage.setItem("shoeRetailUsr", token);
         localStorage.setItem("shoeRetailUsrNm", usrFNm);
         localStorage.setItem("userType", userType);
-      }
+        localStorage.setItem('companyName', companyName);
+        localStorage.setItem('domain', domain);
+
     }
 
     getLogged() {
-      if (isPlatformBrowser(this.platformId)) {
+
         return localStorage.getItem("shoeRetailUsr");
-      } else { return null; }
+
     }
 
     isLoggedIn() {
@@ -38,11 +41,19 @@ export class AuthService {
       return localStorage.getItem("userType");
     }
 
+    getCompanyName () {
+      return localStorage.getItem("companyName");
+    }
+
+    getDomainName () {
+      return localStorage.getItem("domain");
+    }
+
     logout() {
-      if (isPlatformBrowser(this.platformId)) {
+
         localStorage.removeItem("shoeRetailUsr");
         localStorage.removeItem("shoeRetailUsrNm");
-      }
+        console.log("hello");
       this.route.navigate(["/"]);
     }
 }

@@ -18,57 +18,151 @@ export class DashboardService {
     'Authorization': this.auth.getLogged()
   });
 
-  getProfInfo() {
-    return this.http.get(this.api.server+"profile", {headers: this.headers})
+  getProfInfo(token) {
+    console.log(token);
+    const duplicateHeader = new HttpHeaders({
+      'Content-Type': "application/json",
+      'Authorization': token
+    });
+    return this.http.get(this.api.server+"profile", {headers: duplicateHeader})
   }
 
   getAllBill(month: string, year: string) {
-    return this.http.get(this.api.server+"bill/"+month+"/"+year, {headers: this.headers});
+    const token =  this.auth.getLogged();
+    const headers = new HttpHeaders({
+      'Content-Type': "application/json",
+      'Authorization':token
+    });
+    return this.http.get(this.api.server+"bill/"+month+"/"+year, {headers: headers});
   }
 
   getSponsor() {
-    return this.http.get(this.api.server+"sponsor", {headers: this.headers});
+    const token =  this.auth.getLogged();
+    const headers = new HttpHeaders({
+      'Content-Type': "application/json",
+      'Authorization':token
+    });
+    return this.http.get(this.api.server+"sponsor", {headers: headers});
   }
 
   addSponsor(data: any) {
-    return this.http.post(this.api.server+"sponsor/bill", data, {headers: this.headers});
+    const token =  this.auth.getLogged();
+    const headers = new HttpHeaders({
+      'Content-Type': "application/json",
+      'Authorization':token
+    });
+    return this.http.post(this.api.server+"sponsor/bill", data, {headers: headers});
   }
 
   getPayee() {
-    return this.http.get(this.api.server+"payee", {headers: this.headers});
+    const token =  this.auth.getLogged();
+    const headers = new HttpHeaders({
+      'Content-Type': "application/json",
+      'Authorization':token
+    });
+    return this.http.get(this.api.server+"payee", {headers: headers});
   }
 
   addDelivery(data: any) {
-    return this.http.post(this.api.server+"delivery", data, {headers: this.headers});
+    const token =  this.auth.getLogged();
+    const headers = new HttpHeaders({
+      'Content-Type': "application/json",
+      'Authorization':token
+    });
+    return this.http.post(this.api.server+"delivery", data, {headers: headers});
   }
 
   getPayeeBill() {
-    return this.http.get(this.api.server+"payee/bill", {headers: this.headers});
+    const token =  this.auth.getLogged();
+    const headers = new HttpHeaders({
+      'Content-Type': "application/json",
+      'Authorization':token
+    });
+    return this.http.get(this.api.server+"payee/bill", {headers: headers});
   }
 
   getSponsorBill() {
-    return this.http.get(this.api.server+"sponsor/bill", {headers: this.headers});
+    const token =  this.auth.getLogged();
+    const headers = new HttpHeaders({
+      'Content-Type': "application/json",
+      'Authorization':token
+    });
+    return this.http.get(this.api.server+"sponsor/bill", {headers: headers});
   }
 
   getUploadBill() {
-    return this.http.get(this.api.server+"bill-info", {headers: this.headers});
+    const token =  this.auth.getLogged();
+    const headers = new HttpHeaders({
+      'Content-Type': "application/json",
+      'Authorization':token
+    });
+    return this.http.get(this.api.server+"bill-info", {headers: headers});
   }
   getProductList (data) {
-    return this.http.post(this.api.server+"product/getProductList", data,  {headers: this.headers});
+    const token =  this.auth.getLogged();
+    const headers = new HttpHeaders({
+      'Content-Type': "application/json",
+      'Authorization':token
+    });
+    return this.http.post(this.api.server+"product/getProductList", data,  {headers: headers});
   }
   createNewInvoice (data) {
-    return this.http.post(this.api.server+"bill/generateDealerBill", data,  {headers: this.headers});
+    const token =  this.auth.getLogged();
+    const headers = new HttpHeaders({
+      'Content-Type': "application/json",
+      'Authorization':token
+    });
+    return this.http.post(this.api.server+"bill/generateDealerBill", data,  {headers: headers});
   }
   generateImageNewInvoice (data) {
-    return this.http.post(this.api.server+"bill/generateDealerBill", data,  {headers: this.headers});
+    const token =  this.auth.getLogged();
+    const headers = new HttpHeaders({
+      'Content-Type': "application/json",
+      'Authorization':token
+    });
+    return this.http.post(this.api.server+"bill/generateDealerBill", data,  {headers: headers});
   }
   updateDeleiveryInoice (data) {
-    return this.http.post(this.api.server+"delivery/updatedeliveryCredit", data,  {headers: this.headers});
+    const token =  this.auth.getLogged();
+    const headers = new HttpHeaders({
+      'Content-Type': "application/json",
+      'Authorization':token
+    });
+    return this.http.post(this.api.server+"delivery/updatedeliveryCredit", data,  {headers: headers});
   }
   updateCreditInvoice (data) {
-    return this.http.post(this.api.server+"delivery/updatedeliveryCredit", data,  {headers: this.headers});
+    const token =  this.auth.getLogged();
+    const headers = new HttpHeaders({
+      'Content-Type': "application/json",
+      'Authorization':token
+    });
+    return this.http.post(this.api.server+"delivery/updatedeliveryCredit", data,  {headers: headers});
   }
   updateInvoiceStatus (data) {
-    return this.http.post(this.api.server+"delivery/updateInvoiceStatus", data,  {headers: this.headers});
+    const token =  this.auth.getLogged();
+    const headers = new HttpHeaders({
+      'Content-Type': "application/json",
+      'Authorization':token
+    });
+    return this.http.post(this.api.server+"delivery/updateInvoiceStatus", data,  {headers: headers});
   }
+  verifyRetailerMobileNumber(data) {
+    const token =  this.auth.getLogged();
+    const headers = new HttpHeaders({
+      'Content-Type': "application/json",
+      'Authorization':token
+    });
+    return this.http.post(this.api.server+"verifyMobileNumber", data,  {headers: headers});
+  }
+
+  public profileInfo: any = {};
+  setProfileInfo (data) {
+    this.profileInfo = data;
+  }
+
+  getProfileInfo () {
+    return this.profileInfo;
+  }
+
+
 }

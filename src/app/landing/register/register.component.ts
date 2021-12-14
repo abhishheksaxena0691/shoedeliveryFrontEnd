@@ -26,7 +26,9 @@ export class RegisterComponent implements OnInit {
       fstName: ['', Validators.required],
       lstName: ['', Validators.required],
       yrPass: ['', Validators.required],
-      userType: ['', Validators.required]
+      userType: ['', Validators.required],
+      companyName: ['', Validators.required],
+      domain: ['', Validators.required]
     });
     this.regFrm.patchValue({"userType": 2})
     if(this.auth.isLoggedIn())

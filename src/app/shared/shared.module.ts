@@ -1,3 +1,4 @@
+import { SafeHtmlPipe } from './commanPipe';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
@@ -7,11 +8,11 @@ import { HeaderComponent } from './header/header.component';
 
 
 @NgModule({
-  declarations: [SideBarComponent, HeaderComponent],
+  declarations: [SideBarComponent, HeaderComponent, SafeHtmlPipe],
   imports: [
     CommonModule,
     RouterModule
   ],
-  exports: [SideBarComponent, HeaderComponent]
+  exports: [SideBarComponent, HeaderComponent, SafeHtmlPipe]
 })
 export class SharedModule { }

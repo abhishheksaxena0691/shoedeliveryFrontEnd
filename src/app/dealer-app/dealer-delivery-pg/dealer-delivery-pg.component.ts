@@ -1,3 +1,4 @@
+import { AuthService } from './../../guard/auth.service';
 import { DeliveryService } from './../../delivery/delivery.service';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { FilterService } from '../../shared/filter.service';
@@ -105,10 +106,10 @@ export class DealerDeliveryPgComponent implements OnInit {
   msg: string;
   movetocredit: FormGroup;
   dMsg1: boolean;
-  updateStatusValue: any = "";
+  updateStatusValue: any = 1;
   upiPaymmentArray: any = [];
   selectedDay: any;
-  constructor(private formBuilder: FormBuilder, private fetch: DashboardService, private modalService: BsModalService, private filterSrv: FilterService, public deliveryService: DeliveryService) {
+  constructor(private formBuilder: FormBuilder, private fetch: DashboardService, private modalService: BsModalService, private filterSrv: FilterService, public deliveryService: DeliveryService, public authService: AuthService) {
     this.productChange
     .pipe(debounceTime(900), distinctUntilChanged())
     .subscribe((value) => {
@@ -155,19 +156,20 @@ export class DealerDeliveryPgComponent implements OnInit {
     this.modalRef = this.modalService.show(template);
   }
 
-  openInvoiceStatus(template: TemplateRef<any>, billId: any) {
-    this.updateStatusValue = "";
+  openInvoiceStatus(template: TemplateRef<any>, billdata: any) {
+
+    this.updateStatusValue = (billdata.invoiceStatus == undefined || billdata.invoiceStatus == "") ? 1 : billdata.invoiceStatus;
     console.log(this.billDData);
-    const f = this.billDData.filter((data: any) => data._id == billId);
+    const f = this.billDData.filter((data: any) => data._id == billdata._id);
     console.log(f);
         if (f.length) {
-      this.updateStatusValue = f[0].invoiceStatus;
+     // this.updateStatusValue = f[0].invoiceStatus;
       console.log(this.updateStatusValue);
     }
     this.modalRef = this.modalService.show(template);
     console.log(this.profInfo);
     this.invoicStatus.patchValue({
-      billId: billId,
+      billId: billdata._id,
     });
 
   }
@@ -191,22 +193,23 @@ export class DealerDeliveryPgComponent implements OnInit {
     this.selectBrand = null;
     this.weekData = null;
     this.col3Data = [];
-      this.col4Data = [];
-      this.currentActiveTopTab = area;
-      this.monthDataDh =[];
+    this.col4Data = [];
+    this.currentActiveTopTab = area;
+    this.monthDataDh =[];
 
-
+    if (this.dataResult[area] !== undefined) {
       this.filterSrv.monthFilter.forEach(mth => {
         this.monthDataDh.push(this.filterSrv.filterByDateCash(this.dataResult[area], new Date().getTime(), mth))
       });
-
-      this.monthData =[];
-      this.monthData = this.monthDataDh;
+    }
+    this.monthData =[];
+    this.weekData = [];
+    this.daysData = [];
+    this.upiPaymmentArray = [];
+    this.monthData = this.monthDataDh;
+    if (this.dataResult[area] !== undefined) {
       this.billDData =  this.monthData[0].list;
-      // for (var i = 0; i < this.monthData.length; i++) {
-      //   this.billDData =  this.billDData.concat(this.monthData[i].list);
-      //   }
-        console.log(this.billDData);
+    }
   }
 
   sltMonth(month: number): void {
@@ -227,7 +230,7 @@ export class DealerDeliveryPgComponent implements OnInit {
 
 
   getProfileInfo():void {
-    this.fetch.getProfInfo().subscribe(
+    this.fetch.getProfInfo(this.authService.getLogged()).subscribe(
       res => { this.profInfo = res; },
       err => { this.pgMsg = {msg: err.error, alert: 'alert-danger'}; }
     )
@@ -334,6 +337,8 @@ export class DealerDeliveryPgComponent implements OnInit {
     this.sltMonth(month);
     this.weekData = [];
     this.billData = [];
+
+      this.daysData = [];
     let weekList = this.filterSrv.getWeeksStartAndEndInMonth(month, this.filterSrv.today.getMonth());
     console.log(weekList);
     // console.log(this.selectArea);
@@ -489,6 +494,15 @@ export class DealerDeliveryPgComponent implements OnInit {
         for (let i=0; i < this.billDData.length; i++) {
           if (this.billDData[i]._id == this.invoicStatus.value.billId) {
             this.billDData[i].invoiceStatus = this.invoicStatus.value.status;
+            if (parseInt(this.invoicStatus.value.status) == 2) {
+            this.billDData[i]['Packed'] = new Date().getTime();
+            }
+            if (parseInt(this.invoicStatus.value.status) == 3) {
+              this.billDData[i]['Shipped'] = new Date().getTime();
+              }
+              if (parseInt(this.invoicStatus.value.status) == 4) {
+                this.billDData[i]['Delivered'] = new Date().getTime();
+                }
           }
         }
 
@@ -518,7 +532,7 @@ export class DealerDeliveryPgComponent implements OnInit {
 
   updatePayment1(): void {
 
-    console.log("hello");
+
      this.deliveryService.updatepaymentMode(this.paymentForm.value)
     .subscribe((data) => {
       this.paymentForm.reset();

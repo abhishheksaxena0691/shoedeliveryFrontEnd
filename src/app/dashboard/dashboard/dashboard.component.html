@@ -119,7 +119,7 @@
                     <a (click)="openDelivery(deliveryTemplate, bImg._id)" class="btn"><i class="delivery"></i> Delivery</a>
                     <a (click)="openSponsor(sponsorTemplate, bImg)" class="btn"><i class="forward"></i> Sponsored My Bill</a>
                 </nav>
-                <img [src]="serverPath+'/pdfBills/images/'+bImg.billImg[0].name" alt="{{bImg.billImg[0].name}}" (click)="showBill(i)" />
+                <img [src]="'https://shoedelivery.s3.us-west-2.amazonaws.com/invoice/'+bImg.billImg[0].name" alt="{{bImg.billImg[0].name}}" (click)="showBill(i)" />
                 <nav class="menuBtn d-flex flex-wrap align-items-center justify-content-between">
                     <form class="d-flex align-items-center justify-content-between ml-auto">
                         <input type="text" placeholder="Rs." [value]="cleanPrice(bImg.total)" />
@@ -135,7 +135,7 @@
                 <nav class="menuBtn d-flex justify-content-between mb-4">
                     <a (click)="openDelivery(deliveryTemplate, bImg._id)" class="btn"><i class="delivery"></i> Delivery</a>
                 </nav>
-                <img [src]="serverPath+'/pdfBills/images/'+bImg.billDetails.billImg[0].name" alt="{{bImg.billDetails.billImg[0].name}}" (click)="showBill(i)" />
+                <img [src]="'https://shoedelivery.s3.us-west-2.amazonaws.com/invoice/'+bImg.billDetails.billImg[0].name" alt="{{bImg.billDetails.billImg[0].name}}" (click)="showBill(i)" />
                 <nav class="menuBtn d-flex flex-wrap align-items-center justify-content-between">
                     <form class="d-flex align-items-center justify-content-between ml-auto">
                         <input type="text" placeholder="Rs." [value]="cleanPrice(bImg.billDetails.total)" />
@@ -151,7 +151,7 @@
                 <nav class="menuBtn d-flex justify-content-between mb-4">
                     <a (click)="openDelivery(deliveryTemplate, bImg._id)" class="btn"><i class="delivery"></i> Delivery</a>
                 </nav>
-                <img [src]="serverPath+'pdfBills/'+bImg.billImg" alt="{{bImg.billImg}}" (click)="showBill(i)" />
+                <img [src]="'https://shoedelivery.s3.us-west-2.amazonaws.com/invoice/'+bImg.billImg" alt="{{bImg.billImg}}" (click)="showBill(i)" />
                 <nav class="menuBtn d-flex flex-wrap align-items-center justify-content-between">
                     <form class="d-flex align-items-center justify-content-between ml-auto">
                         <input type="text" placeholder="Rs." [value]="cleanPrice(bImg.total)" />
@@ -229,11 +229,11 @@
 
 
 
-<section id="billPop" *ngIf="popBill">
+<!-- <section id="billPop" *ngIf="popBill">
     <aside>
         <a (click)="showBill(0)" class="close"></a>
         <img [src]="serverPath+'/pdfBills/images/'+billData[popId].billImg[0].name" alt="{{billData[popId].billImg[0].name}}" />
     </aside>
-</section>
+</section> -->
 
 

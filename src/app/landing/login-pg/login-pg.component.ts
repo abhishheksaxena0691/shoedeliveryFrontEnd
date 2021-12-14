@@ -25,7 +25,7 @@ export class LoginPgComponent implements OnInit {
       yrPass: ['', Validators.required],
       userType: ['', Validators.required]
     });
-    this.logFrm.patchValue({"userType": 2})
+    this.logFrm.patchValue({"userType": 1})
     const user = parseInt(localStorage.getItem("userType"));
     console.log(user);
     if (this.auth.isLoggedIn()) {
@@ -52,13 +52,15 @@ export class LoginPgComponent implements OnInit {
       this.fetch.logUsr(formObj).subscribe(
         res => {
           console.log(res);
-          const data: any = res;
-          this.auth.sendToken(data.token, data.usrName, this.logFrm.value.userType);
+          const data: any = JSON.parse(JSON.stringify(res));
+          this.auth.sendToken(data.token, data.usrName, data.companyName, data.domainNme, this.logFrm.value.userType);
           this.logMsg = {msg: "Login successfully!", alert: 'alert-success'};
 
           this.logBtm = false;
+          const uType = this.logFrm.value.userType;
+          this.logFrm.reset();
           setTimeout(() => {
-            if (parseInt(this.logFrm.value.userType) === 1) {
+            if (parseInt(uType) === 1) {
               this.route.navigate(["/dealer/dashboard"]);
               this.logFrm.reset();
             } else {

@@ -39,13 +39,38 @@
                 <div class="alert alert-danger inputMsg" role="alert" *ngIf="regSubmit && autoFrm.lstName.errors">
                     <div *ngIf="autoFrm.lstName.errors.required">Please mention your last name</div>
                 </div>
+                <h4>Domain</h4>
+                <!-- <input type="text" formControlName="domain" /> -->
+                <select formControlName="domain">
+                  <option value="">Select</option>
+                  <option value="Medical">Medical</option>
+                  <option value="Garments">Garments</option>
+                  <option value="Footwear">Footwear</option>
+                  <option value="Electronics">Electronics</option>
+                  <option value="SuperMart">Super Mart</option>
+                  <option value="MiniMart">Mini Mart</option>
+                  <option value="Service">Service</option>
+                  <option value="Legal service">Legal service</option>
+                  <option value="Civil work">Civil work</option>
+                  <option value="Education">Education</option>
+
+                </select>
+                <div class="alert alert-danger inputMsg" role="alert" *ngIf="regSubmit && autoFrm.domain.errors">
+                    <div *ngIf="autoFrm.domain.errors.required">Please mention your domain name</div>
+                </div>
+                <h4>Company Name</h4>
+                <input type="text" formControlName="companyName" />
+                <div class="alert alert-danger inputMsg" role="alert" *ngIf="regSubmit && autoFrm.companyName.errors">
+                    <div *ngIf="autoFrm.companyName.errors.required">Please mention your company name</div>
+                </div>
+
                 <h4>Password</h4>
                 <input type="password" formControlName="yrPass" />
                 <div class="alert alert-danger inputMsg" role="alert" *ngIf="regSubmit && autoFrm.yrPass.errors">
                     <div *ngIf="autoFrm.yrPass.errors.required">Please mention your password</div>
                 </div>
 
-                <button type="submit" [disabled]="regBtm">Register</button>
+                <button type="submit" >Register</button>
                 <hr />
                 <h3>Already registered? <a routerLink="">Login Now</a></h3>
             </form>

@@ -1,0 +1,1105 @@
+<app-header></app-header>
+<div class="container">
+  <div class="page-header">
+    <div class="row">
+          <div class="col-12 mt-2 mb-2">
+            <span style="float: right;"><button type="button" class="btn btn-danger ml-2" (click)="myproduct(true)">Add Product</button></span>
+            <span style="float: right;"><button type="button" class="btn btn-danger ml-2" (click)="myproduct(false)">Listing</button></span>
+            <span style="float: right;"><button type="button" class="btn btn-danger" (click)="myorders()">My Orders</button></span>
+          </div>
+      </div>
+  </div>
+    <ng-template [ngIf]= "!myOrderStatus" [ngIfElse]="myOrderStatus1">
+          <ng-template [ngIf]= "addClassifiedTemplate" [ngIfElse]="classifiedListing">
+            <div class="container" style="background-color: #fff;">
+                  <form [formGroup]="classifiedForm" class="form-horizontal">
+                    <div class="row">
+                      <div class="col-12">
+                          <div class="form-group">
+                            <label for="memberId" class="control-label">Item name</label>
+                            <input type="text" formControlName="name" class="form-control" id="memberId"/>
+
+                          </div>
+                          <div class="form-group">
+                            <input class="form-check-input com ml-2" type="checkbox" (change)="addToTopOffer($event.target.checked)" [checked]="classifiedForm.value.category == 'category1'"   name="committee"/>
+                            <label class="form-check-label ml-4">
+                               Make Top offer
+                            </label>
+                        </div>
+                          <div class="form-group"  *ngIf="classifiedForm.value.category != 'category1'">
+                              <label for="categoryId" class="control-label">Category</label>
+                              <select class="form-control"   formControlName="category" id="categoryId" (change)="selectCategory($event.target.value)">
+                                <option value="" >Select</option>
+                                <!-- <option value="category1"> Top Offer</option> -->
+                                <option value="category2">Grocery</option>
+
+                                <option value="category4">Fashion</option>
+                                <option value="category5">Electronics</option>
+                                <option value="category6">Home</option>
+
+                                <option value="category8">Beauty & Toys </option>
+
+                                <option value="category10">Medical  </option>
+                                <option value="category11">Saloon</option>
+                                <option value="category12">Repair </option>
+                                <option value="category13">Legal Services</option>
+                                <option value="category14">Civil Work</option>
+                                <option value="category15">Education</option>
+                              </select>
+                          </div>
+
+                          <div class="form-group" *ngIf="classifiedForm.value.category != 'category1'">
+                            <label for="categoryId" class="control-label">Sub Category</label>
+                            <select class="form-control"   formControlName="subcategory" id="categoryId">
+                              <option value="" >Select</option>
+                              <option *ngFor="let obj of subCategoryClassifiedList[setClassified]" [value]="obj.type">{{obj.name}}</option>
+                            </select>
+                          </div>
+                          <div class="form-group">
+                            <label for="categoryId" class="control-label">Brand</label>
+                            <input type="text" formControlName="brand" class="form-control" id="brandId"/>
+                          </div>
+                          <div class="form-group">
+                            <label for="priceId" class="control-label">Price</label>
+                            <input type="number" formControlName="price" class="form-control" id="priceId"/>
+                          </div>
+
+                          <div class="form-group">
+                            <label for="descriptionId" class="control-label">Description</label>
+                            <angular-editor [placeholder]="'Enter text here...'" formControlName="description"  [config]="editorConfig"></angular-editor>
+                          </div>
+                          <div class="form-group">
+                            <label for="quantityId" class="control-label">Quantity</label>
+                            <input type="text" formControlName="quantity" class="form-control" id="quantityId"/>
+                          </div>
+                          <div class="form-group">
+                            <label for="quantityId" class="control-label">Key Features one</label>
+                            <input type="text" formControlName="keyFeatureOne" class="form-control" id="quantityId"/>
+                          </div>
+                          <div class="form-group">
+                            <label for="quantityId" class="control-label">Key Features two</label>
+                            <input type="text" formControlName="keyFeatureTwo" class="form-control" id="quantityId"/>
+                          </div>
+                          <div class="form-group">
+                            <label for="quantityId" class="control-label">Key Features three</label>
+                            <input type="text" formControlName="keyFeatureThree" class="form-control" id="quantityId"/>
+                          </div>
+
+
+                        </div>
+                  </div>
+                    <div class="row">
+                          <div class="col-12 form-group">
+                            <label for="file-upload" class="custom-file-upload caption"> Add Image </label>
+                            <input id="file-upload" type="file" (change)="uploadClassifiedattachment($event)" accept="image/x-png, image/jpeg"/>
+                          </div>
+                          <span style="color: #aa0000;" *ngIf="imgURL == 0">At least one image is required</span>
+                      </div>
+                      <div class="row"  *ngIf="uploadedVideo == ''">
+                        <div class="col-12 form-group">
+                          <label for="file-upload1" class="custom-file-upload caption"> Add Video </label>
+                          <input id="file-upload1" type="file" (change)="uploadClassifiedVideo($event, uploadingFolder)" accept="video/mp4"/>
+                        </div>
+                      </div>
+                      <div class="row" *ngIf="!editProductStatus">
+                          <div class="col-12 form-group">
+
+                            <ul class="nav mt-2">
+                              <ng-container  *ngFor="let item of imgURL; index as i">
+                                <li class="ml-2">
+                                  <div style="position:relative;">
+                                    <button type="submit" class="close AClass"  (click)="removeClassified(i)">
+                                      <span>&times;</span>
+                                    </button>
+
+                                    <img [src]="item" height="200" width="200"/>
+                                </div>
+                                </li>
+
+                              </ng-container>
+                            </ul>
+                          </div>
+                      </div>
+                      <div class="row" *ngIf="editProductStatus">
+                        <div class="col-12 form-group">
+
+                          <ul class="nav mt-2">
+                            <ng-container  *ngFor="let item of imgURL; index as i">
+                              <li class="ml-2" *ngIf="item.extension != 'mp4'">
+                                <div style="position:relative;">
+                                  <button type="submit" class="close AClass"  (click)="removeClassified(i)">
+                                    <span>&times;</span>
+                                  </button>
+
+                                  <img *ngIf="item.name == undefined" [src]="item" height="200" width="200"/>
+                                  <img *ngIf="item.name != undefined"  [src]="'https://shoedelivery.s3.us-west-2.amazonaws.com/communication/'+ item.name" height="200" width="200"/>
+                              </div>
+                              </li>
+
+                            </ng-container>
+                          </ul>
+
+                        </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-12 form-group" *ngIf="uploadedVideo != ''">
+                        <img src="../../../assets/images/videoThumbnail.jpg" (click)="openVideo(playVideo, {'name': uploadedVideo})" height="80px" width="80px"/>
+                        {{uploadedVideo}} <span class="close"    (click)="removeVideo(i)">&times;</span>
+                      </div>
+                        <div class="col-12 mt-2">
+                          <div class="form-group">
+
+                            <button type="button"  *ngIf="!editProductStatus" class="btn setColor mb-2" [disabled]="(!classifiedForm.valid || imgURL.length == 0)" (click)="addProduct(uploadingFolder)">Submit</button>
+                            <button type="button"  *ngIf="editProductStatus" class="btn setColor mb-2" [disabled]="(!classifiedForm.valid || imgURL.length == 0)" (click)="addProduct(uploadingFolder)">Submit</button>
+                          </div>
+                        </div>
+                    </div>
+
+                    </form>
+                </div>
+          </ng-template>
+          <ng-template #classifiedListing>
+            <ng-template [ngIf]= "detailClassifiedStatus" [ngIfElse]="productdetailsSection">
+              <ul class="nav nav-tabs mt-2" style="background-color: #fff;">
+                <li class="nav-item active" [ngClass]="{'forumTabActiveli': setClassified == 'category1'}"  (click)="setFirstCategory('category1','subCategorytype11');">
+                  <a class="nav-link" [ngClass]="{'forumTabActive': setClassified == 'category1'}" data-toggle="tab">
+                    <figure>
+                        <img src="../../../assets/images/BestOffericon.png" alt="Trulli" class="menuImage">
+                        <figcaption>Top Offer</figcaption>
+                    </figure>
+                  </a>
+                </li>
+                <li class="nav-item" [ngClass]="{'forumTabActiveli': setClassified == 'category2'}" (click)="setFirstCategory('category2','subCategorytype21');"><a class="nav-link" [ngClass]="{'forumTabActive': setClassified == 'category2'}" data-toggle="tab">
+
+                  <figure>
+                    <img src="../../../assets/images/grocery.png" alt="Trulli" class="menuImage">
+                    <figcaption>Grocery</figcaption>
+                </figure>
+                  </a></li>
+                <!-- <li class="nav-item" [ngClass]="{'forumTabActiveli': setClassified == 'category3'}"   (click)="setFirstCategory('category3','subCategorytype31');"><a class="nav-link" [ngClass]="{'forumTabActive': setClassified == 'category3'}" data-toggle="tab">
+                  <figure>
+                    <img src="../../../assets/images/mobile.jpg" alt="Trulli" class="menuImage">
+                    <figcaption>Mobiles</figcaption>
+                </figure>
+                   </a></li> -->
+                <li class="nav-item" [ngClass]="{'forumTabActiveli': setClassified == 'category4'}"  (click)="setFirstCategory('category4','subCategorytype41');"><a class="nav-link" [ngClass]="{'forumTabActive': setClassified == 'category4'}" data-toggle="tab">
+                  <figure>
+                    <img src="../../../assets/images/fashionImages.jpg" alt="Trulli" class="menuImage">
+                    <figcaption>Fashion</figcaption>
+                </figure>
+                   </a></li>
+                <li class="nav-item" [ngClass]="{'forumTabActiveli': setClassified == 'category5'}"  (click)="setFirstCategory('category5','subCategorytype51');"><a class="nav-link" [ngClass]="{'forumTabActive': setClassified == 'category5'}" data-toggle="tab">
+                  <figure>
+                    <img src="../../../assets/images/electronics.png" alt="Trulli" class="menuImage">
+                    <figcaption>Electronics</figcaption>
+                </figure>
+                  </a></li>
+                <li class="nav-item" [ngClass]="{'forumTabActiveli': setClassified == 'category6'}" (click)="setFirstCategory('category6','subCategorytype61');"><a class="nav-link" [ngClass]="{'forumTabActive': setClassified == 'category6'}" data-toggle="tab">
+                  <figure>
+                    <img src="../../../assets/images/home.png" alt="Trulli" class="menuImage">
+                    <figcaption>Home</figcaption>
+                </figure>
+                  </a></li>
+                <!-- <li class="nav-item" [ngClass]="{'forumTabActiveli': setClassified == 'category7'}"   (click)="setFirstCategory('category7','subCategorytype71');"><a class="nav-link" [ngClass]="{'forumTabActive': setClassified == 'category7'}" data-toggle="tab">
+                  <figure>
+                    <img src="../../../assets/images/appliances.jpg" alt="Trulli" class="menuImage">
+                    <figcaption>Applicances</figcaption>
+                </figure>
+                  </a></li> -->
+                <li class="nav-item" [ngClass]="{'forumTabActiveli': setClassified == 'category8'}"  (click)="setFirstCategory('category8','subCategorytype81');"><a class="nav-link" [ngClass]="{'forumTabActive': setClassified == 'category8'}" data-toggle="tab">
+                  <figure>
+                    <img src="../../../assets/images/Beautyandpersonalcare.jpg" alt="Trulli" class="menuImage">
+                    <figcaption>Beauty & Toys</figcaption>
+                </figure>
+                    </a></li>
+                <!-- <li class="nav-item" [ngClass]="{'forumTabActiveli': setClassified == 'category9'}"  (click)="setFirstCategory('category9','subCategorytype91');"><a class="nav-link" [ngClass]="{'forumTabActive': setClassified == 'category9'}" data-toggle="tab">
+                  <figure>
+                    <img src="../../../assets/images/fruitvegetable.jpg" alt="Trulli" class="menuImage">
+                    <figcaption>Vegetable & Fruits</figcaption>
+              </figure>
+                </a></li> -->
+                <li class="nav-item" [ngClass]="{'forumTabActiveli': setClassified == 'category10'}"  (click)="setFirstCategory('category10','subCategorytype101');"><a class="nav-link" [ngClass]="{'forumTabActive': setClassified == 'category10'}" data-toggle="tab">
+                  <figure>
+                    <img src="../../../assets/images/MedicalCategory.jpg" alt="Trulli" class="menuImage">
+                    <figcaption class="figcaption1">Medical</figcaption>
+                  </figure>
+                  </a>
+              </li>
+
+              <li class="nav-item" [ngClass]="{'forumTabActiveli': setClassified == 'category11'}"  (click)="setFirstCategory('category11','subCategorytype201');"><a class="nav-link" [ngClass]="{'forumTabActive': setClassified == 'category11'}" data-toggle="tab">
+                  <figure>
+                    <img src="../../../assets/images/Home_salon.jpg" alt="Trulli" class="menuImage">
+                    <figcaption class="figcaption1">Salon</figcaption>
+                  </figure>
+                    </a>
+              </li>
+
+              <li class="nav-item" [ngClass]="{'forumTabActiveli': setClassified == 'category12'}"  (click)="setFirstCategory('category12','subCategorytype301');"><a class="nav-link" [ngClass]="{'forumTabActive': setClassified == 'category12'}" data-toggle="tab">
+                  <figure>
+                    <img src="../../../assets/images/Home-Repairs.jpg" alt="Trulli" class="menuImage">
+                    <figcaption class="figcaption1">Repair</figcaption>
+                  </figure>
+                  </a>
+                </li>
+                <li class="nav-item" [ngClass]="{'forumTabActiveli': setClassified == 'category13'}"  (click)="setFirstCategory('category13','subCategorytype402');"><a class="nav-link" [ngClass]="{'forumTabActive': setClassified == 'category13'}" data-toggle="tab">
+                  <figure>
+                    <img src="../../../assets/images/Legalservices.jpg" alt="Trulli" class="menuImage">
+                    <figcaption class="figcaption1">Legal Services</figcaption>
+                  </figure>
+                  </a>
+                </li>
+
+                <li class="nav-item" [ngClass]="{'forumTabActiveli': setClassified == 'category14'}"  (click)="setFirstCategory('category14','subCategorytype502');"><a class="nav-link" [ngClass]="{'forumTabActive': setClassified == 'category14'}" data-toggle="tab">
+                  <figure>
+                    <img src="../../../assets/images/CivilWork.jpg" alt="Trulli" class="menuImage">
+                    <figcaption class="figcaption1">Civil Work
+                    </figcaption>
+                  </figure>
+                  </a>
+                </li>
+
+                <li class="nav-item" [ngClass]="{'forumTabActiveli': setClassified == 'category15'}"  (click)="setFirstCategory('category15','subCategorytype601');"><a class="nav-link" [ngClass]="{'forumTabActive': setClassified == 'category15'}" data-toggle="tab">
+                  <figure>
+                    <img src="../../../assets/images/E-Learning.jpg" alt="Trulli" class="menuImage">
+                    <figcaption class="figcaption1">Education</figcaption>
+                  </figure>
+                  </a>
+                </li>
+
+              </ul>
+              <div class="tab-content" style="background-color: #fff;">
+                <div id="home" class="tab-pane fade in active show text-left">
+                  Sub Menu
+                    <ul class="navsumenu nav-tabs submenu">
+                      <li class="nav-item" *ngFor="let item of subCategoryClassifiedList[setClassified]; index as i;" [ngClass]="{'forumTabActiveli': subCategoryClassified == 'subCategorytype11'}" >
+                            <a class="nav-link" (click)="setSecondCategory(setClassified, item.type)" [ngClass]="{'forumTabActive': subCategoryClassified == 'subCategorytype11'}" data-toggle="tab">
+                                <figure>
+                                  <img src="../../../assets/images/{{item.images}}" alt="Trulli" class="submenuImage">
+                                  <figcaption class="figcaption1">{{item.name}}</figcaption>
+                                </figure>
+                              </a>
+                      </li>
+                    </ul>
+                </div>
+            </div>
+              <ng-template [ngIf]="loadingTrue" [ngIfElse]="realList">
+                <div class="wrapper1">
+                  <div class="row">
+                    <div class="col-4">
+                  <div class="card-loader1 card-loader--tabs"></div>
+                </div>
+                <div class="col-4">
+                  <div class="card-loader1 card-loader--tabs"></div>
+                  </div>
+                  <div class="col-4">
+                  <div class="card-loader1 card-loader--tabs"></div>
+                  </div>
+                </div>
+                </div>
+              </ng-template>
+              <ng-template #realList>
+              <div class="row">
+                <div class="col-md-4 col-sm-12" *ngFor="let item of allProduct; index as i;">
+                  <div class="container1">
+                    <div class="card">
+                      <div class="card-head">
+                        <img  [src]="'https://shoedelivery.s3.us-west-2.amazonaws.com/communication/'+item.doc.fileName[0].name" alt="logo" class="card-logo">
+                      </div>
+                      <div class="card-body">
+                        <div class="row">
+                          <div class="col-12">
+                        <div class="product-desc">
+                          <span class="product-title">
+                                {{item.doc.name}}
+                                  <span class="badge">
+                                    &#x20B9;<b>{{item.doc.price}}</b>
+
+                                  </span>
+                                  <div class="popover__wrapper" *ngIf="item.listPrice.length > 1">
+                                    <a> <h2 class="popover__title">see other offers</h2> </a>
+                                    <div class="popover__content">
+                                      <p class="popover__message" *ngFor="let priceList of item.listPrice">
+                                        &#x20B9; {{priceList.price}} by {{priceList.ownerName}}
+                                      </p>
+                                    </div>
+                                  </div>
+
+                          </span>
+                          <span class="product-caption">
+                                Brand: <b> {{item.doc.brand}}</b>
+                                </span>
+                            <span class="product-rating">
+                              <div class="star-rating" (click)="showRatingPercentage(Rating,item.doc.comment)">
+                                  <div class="back-stars">
+                                      <i class="fa fa-star" aria-hidden="true"></i>
+                                      <i class="fa fa-star" aria-hidden="true"></i>
+                                      <i class="fa fa-star" aria-hidden="true"></i>
+                                      <i class="fa fa-star" aria-hidden="true"></i>
+                                      <i class="fa fa-star" aria-hidden="true"></i>
+
+                                      <div class="front-stars" [style.width.%]="((item.averageRating/5)*100)">
+                                          <i class="fa fa-star" aria-hidden="true"></i>
+                                          <i class="fa fa-star" aria-hidden="true"></i>
+                                          <i class="fa fa-star" aria-hidden="true"></i>
+                                          <i class="fa fa-star" aria-hidden="true"></i>
+                                          <i class="fa fa-star" aria-hidden="true"></i>
+                                      </div>
+                                  </div>
+                              </div>
+                            </span>
+                        </div>
+                        </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-4">
+                            <span class="setColor mt-2 ml-3 float-right btn" (click)="deleteProduct(item.doc._id,i)"> Delete </span>
+
+                            </div>
+                            <div class="col-4">
+                              <span class="setColor mt-2 float-right btn" (click)="detailProduct(item)"> Detail </span>
+                            </div>
+                            <div class="col-4">
+                              <span class="setColor mt-2 float-right btn" (click)="editProduct(item)"> Edit </span>
+                            </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+                <div class="col-4"></div>
+                <div class="col-4"></div>
+
+              </div>
+              </ng-template>
+              </ng-template>
+
+              <ng-template #productdetailsSection>
+                <div class="container">
+                  <div class="cardDetails">
+                    <div class="container-fliud">
+                      <div class="wrapper row">
+                        <div class="preview col-md-12">
+
+                          <div class="preview-pic tab-content">
+                            <ng-container  *ngFor="let item of detailedImages; index as i">
+                                <div [ngClass]="{'active': i == setCurrentIndexImage}" class="tab-pane" id="pic-1" *ngIf="item.extension != 'mp4'">
+                                  <img   [src]="'https://shoedelivery.s3.us-west-2.amazonaws.com/communication/'+ item.name" />
+                                </div>
+                                <div [ngClass]="{'active': i == setCurrentIndexImage}" class="tab-pane" id="pic-1" *ngIf="item.extension == 'mp4'">
+                                      <video width="420" height="240" controls>
+                                        <source   [src]="'https://shoedelivery.s3.us-west-2.amazonaws.com/communication/'+ item.name" type="video/mp4"/>
+
+                                      </video>
+                                </div>
+                          </ng-container>
+                          </div>
+                          <ul class="preview-thumbnail nav nav-tabs">
+                            <ng-container  *ngFor="let item of detailedImages; index as i">
+                            <li [ngClass]="{'active': i == setCurrentIndexImage}"  *ngIf="item.extension != 'mp4'" (click)="setCurrentImage(i)" ><a data-target="#pic-1" data-toggle="tab" >
+                              <img   [src]="'https://shoedelivery.s3.us-west-2.amazonaws.com/communication/'+ item.name" /></a>
+                              </li>
+                              <li [ngClass]="{'active': i == setCurrentIndexImage}"  *ngIf="item.extension == 'mp4'" (click)="setCurrentImage(i)" ><a data-target="#pic-1" data-toggle="tab" >
+                                <img  src="../../../assets/images/videoThumbnail.jpg" height="177"/></a>
+                              </li>
+                            </ng-container>
+                          </ul>
+
+                        </div>
+                        <div class="details col-md-12">
+                          <h3 class="product-title">{{detailPageData.doc.name}}</h3>
+                          <div class="rating">
+                            <span class="product-rating">
+                                  <div class="star-rating" (click)="showRatingPercentage(Rating,detailPageData.doc.comment)">
+                                    <div class="back-stars">
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <div class="front-stars" [style.width.%]="ratingPercentage">
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                              </span>
+                          </div>
+                          <div class="rating mt-2">  <span class="review-no">{{detailPageData.doc?.comment.length}} reviews</span></div>
+                          <h4 class="price mt-2">price: <span>&#x20B9; {{detailPageData.doc.price}}</span></h4>
+                          <div class="product-properties">
+                            <span class="product-size">
+                                    <span class="cardDiv product-caption mt-2" *ngIf="detailPageData?.doc.keyFeatureOne != undefined">
+                                      <svg   xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="#00a94f" class="mr-1 pl-1"><path _ngcontent-shv-c64="" fill="#00a94f" d="M11,3a8,8,0,1,0,8,8,7,7,0,0,0-.423-2.519l-1,.981A6.228,6.228,0,0,1,17.769,11,6.769,6.769,0,1,1,11,4.231a6.591,6.591,0,0,1,4.673,1.9l.865-.865A7.806,7.806,0,0,0,11,3Zm6.942,2.635L11,12.577,8.365,9.942l-.885.885L10.558,13.9l.442.423.442-.423,7.385-7.385Z" transform="translate(-3 -3)"></path></svg> {{detailPageData?.doc.keyFeatureOne}}
+                                    </span>
+                                    <span class="cardDiv product-caption mt-2" *ngIf="detailPageData?.doc.keyFeatureTwo != undefined">
+                                      <svg   xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="#00a94f" class="mr-1 pl-1"><path _ngcontent-shv-c64="" fill="#00a94f" d="M11,3a8,8,0,1,0,8,8,7,7,0,0,0-.423-2.519l-1,.981A6.228,6.228,0,0,1,17.769,11,6.769,6.769,0,1,1,11,4.231a6.591,6.591,0,0,1,4.673,1.9l.865-.865A7.806,7.806,0,0,0,11,3Zm6.942,2.635L11,12.577,8.365,9.942l-.885.885L10.558,13.9l.442.423.442-.423,7.385-7.385Z" transform="translate(-3 -3)"></path></svg> {{detailPageData?.doc.keyFeatureTwo}}
+                                    </span>
+                                    <span class="cardDiv product-caption mt-2" *ngIf="detailPageData?.doc.keyFeatureThree != undefined">
+                                      <svg   xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="#00a94f" class="mr-1 pl-1"><path _ngcontent-shv-c64="" fill="#00a94f" d="M11,3a8,8,0,1,0,8,8,7,7,0,0,0-.423-2.519l-1,.981A6.228,6.228,0,0,1,17.769,11,6.769,6.769,0,1,1,11,4.231a6.591,6.591,0,0,1,4.673,1.9l.865-.865A7.806,7.806,0,0,0,11,3Zm6.942,2.635L11,12.577,8.365,9.942l-.885.885L10.558,13.9l.442.423.442-.423,7.385-7.385Z" transform="translate(-3 -3)"></path></svg> {{detailPageData?.doc.keyFeatureThree}}
+                                    </span>
+                                  </span>
+
+                          </div>
+                          <p class="product-description" [innerHTML]="detailPageData.doc.description | safeHtml"></p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                    <div class="row justify-content-center mx-0 mx-md-auto">
+                        <div class="col-lg-12 col-md-11 px-1 px-sm-2">
+                            <div class="card border-0 px-3">
+
+                                  <ng-template [ngIf]="detailPageData.doc.comment != undefined && detailPageData.doc.comment.length > 0">
+                                      <div class="review p-2" *ngFor="let com of detailPageData.doc.comment; index as i">
+                                          <div class="row d-flex">
+                                              <div class="profile-pic">{{com.associationId}}</div>
+                                              <div class="d-flex flex-column pl-3">
+                                                  <h5>{{com.senderName}}</h5>
+                                                  <p class="grey-text">{{com.createdOn | date: 'mediumDate'}}</p>
+                                              </div>
+                                          </div>
+                                          <div class="row pb-1 ml-5">
+                                              <span class="fa fa-star detailStar" [ngClass]="{'checked':  com.rating > 0}"></span>
+                                              <span class="fa fa-star detailStar" [ngClass]="{'checked':  com.rating > 1}"></span>
+                                              <span class="fa fa-star detailStar" [ngClass]="{'checked':  com.rating > 2}"></span>
+                                              <span class="fa fa-star detailStar" [ngClass]="{'checked':  com.rating > 3}"></span>
+                                              <span class="fa fa-star detailStar" [ngClass]="{'checked':  com.rating > 4}"></span>
+                                          </div>
+                                          <div class="row pb-1 ml-5">
+                                              <p>{{com.reveiw}}</p>
+                                          </div>
+
+                                      </div>
+                                    </ng-template>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+              </ng-template>
+          </ng-template>
+    </ng-template>
+    <ng-template #myOrderStatus1>
+      <div class="container">
+        <div class="row">
+          <div class="col-12">
+            <div class="topnav">
+              <a [ngClass]="currentTab == 1 ? 'active' : ''" (click)="changeTab(1, 'open')">Request</a>
+
+              <a [ngClass]="currentTab == 3 ? 'active' : ''" (click)="changeTab(3, 'acceptedByMerchant')">Response</a>
+              <a [ngClass]="currentTab == 2 ? 'active' : ''" (click)="changeTab(2, 'close')">Order</a>
+              <a [ngClass]="currentTab == 4 ? 'active' : ''" (click)="changeTab(4, 'rejectByMerchant')">Cancel</a>
+              <a [ngClass]="currentTab == 5 ? 'active' : ''" (click)="changeTab(5, 'rejectByRetailer')">Reject</a>
+            </div>
+          </div>
+        </div>
+        <ng-template [ngIf]="orderLoading" [ngIfElse]="allOrderTemplate">
+          <div class="wrapper1">
+            <div class="row">
+              <div class="col-4">
+            <div class="card-loader1 card-loader--tabs"></div>
+          </div>
+          <div class="col-4">
+            <div class="card-loader1 card-loader--tabs"></div>
+            </div>
+            <div class="col-4">
+            <div class="card-loader1 card-loader--tabs"></div>
+            </div>
+          </div>
+          </div>
+        </ng-template>
+        <ng-template #allOrderTemplate>
+          <ng-container *ngTemplateOutlet="platformMobile ? mobileOrder : desktopOrder"></ng-container>
+        </ng-template>
+      </div>
+    </ng-template>
+</div>
+
+
+
+<app-side-bar></app-side-bar>
+<ng-template #playVideo>
+  <div class="modal-header">
+
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-12">
+
+          <video width="420" height="240" controls>
+            <source   [src]="'https://shoedelivery.s3.us-west-2.amazonaws.com/communication/'+ setImageName" type="video/mp4">
+
+          </video>
+
+
+      </div>
+
+    </div>
+
+  </div>
+</ng-template>
+
+<ng-template #uploadingFolder>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Uploading Image</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-12">
+        <div class="slideshow-container">
+          <div class="mySlides">
+            <div class="progress">
+              <div class="progress-bar" role="progressbar"  [style.width]="imageUploadPercent + '%'">
+                <span class="sr-only">{{imageUploadPercent}} % Complete</span>
+              </div>
+            </div>
+            <div class="card-body sliderBody ml-1"> {{imageUploadPercent}} % completed </div>
+            </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+
+<ng-template #desktopOrder>
+  <div class="row mt-3"  *ngFor="let order of orderList; index as j">
+    <div class="col-12 accordion" id="accordionExample">
+      <a data-toggle="collapse" href="#collapseExample1{{j}}" aria-expanded="true"  (click)="showCurrent(j)">
+          <div class="row headingBorder" >
+            <div class="col-md-4 col-sm-6" style="text-align: left;" >
+              <span><b>Order Id: {{order.orderId}}</b></span>
+            </div>
+            <div class="col-md-4 col-sm-12">  <span class="trackIdCom"> <b> Date : {{order.orderId |  date: 'mediumDate'}}</b></span> </div>
+            <div class="col-md-2 col-sm-12"> <span class="trackIdCom"> <b> Time: {{order.orderId |  date: 'shortTime'}}</b></span> </div>
+            <div class="col-md-2 col-sm-12"> <span class="trackIdCom"> </span> orders({{order.values.length}})</div>
+          </div>
+        </a>
+          <div class="row mt-3 collapse" [ngClass]="(j == 0) ? 'show' : ''" id="collapseExample1{{j}}">
+            <div class="col-12 mt-2" >
+              <div class="col-12"  *ngFor="let item of order.values; index as i">
+                <div class="card">
+                  <div class="card-body">
+                    <h5 class="card-title"> Order From:  {{item.senderName}}</h5>
+                    <div class="row">
+                      <div class="col-md-1"><b>Satus</b></div>
+                      <div class="col-md-2"><b>Image</b></div>
+                      <div class="col-md-3"><b>Name</b></div>
+                      <div class="col-md-2"><b>Qantity</b></div>
+                      <div class="col-md-1"><b>Price</b></div>
+                      <div class="col-md-2"><b>Total</b></div>
+                      <div class="col-md-1"></div>
+                    </div>
+                    <div class="row mt-2" *ngFor="let p of item.cart| keyvalue;">
+                          <div class="col-1">
+                              <svg *ngIf="item.list[p.key] != undefined" _ngcontent-shv-c64=""  xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 16 16" fill="#00a94f" class="mr-1 pl-1"><path _ngcontent-shv-c64="" fill="#00a94f" d="M11,3a8,8,0,1,0,8,8,7,7,0,0,0-.423-2.519l-1,.981A6.228,6.228,0,0,1,17.769,11,6.769,6.769,0,1,1,11,4.231a6.591,6.591,0,0,1,4.673,1.9l.865-.865A7.806,7.806,0,0,0,11,3Zm6.942,2.635L11,12.577,8.365,9.942l-.885.885L10.558,13.9l.442.423.442-.423,7.385-7.385Z" transform="translate(-3 -3)"></path></svg>
+                              <svg *ngIf="item.list[p.key] == undefined" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" fill="#E64A19"
+                                width="20.926px" height="20.926px" viewBox="0 0 94.926 94.926" style="enable-background:new 0 0 94.926 94.926;"
+                                xml:space="preserve" class="mr-1 pl-1">
+                                <g>
+                                  <path d="M55.931,47.463L94.306,9.09c0.826-0.827,0.826-2.167,0-2.994L88.833,0.62C88.436,0.224,87.896,0,87.335,0
+                                    c-0.562,0-1.101,0.224-1.498,0.62L47.463,38.994L9.089,0.62c-0.795-0.795-2.202-0.794-2.995,0L0.622,6.096
+                                    c-0.827,0.827-0.827,2.167,0,2.994l38.374,38.373L0.622,85.836c-0.827,0.827-0.827,2.167,0,2.994l5.473,5.476
+                                    c0.397,0.396,0.936,0.62,1.498,0.62s1.1-0.224,1.497-0.62l38.374-38.374l38.374,38.374c0.397,0.396,0.937,0.62,1.498,0.62
+                                    s1.101-0.224,1.498-0.62l5.473-5.476c0.826-0.827,0.826-2.167,0-2.994L55.931,47.463z"/>
+                                </g>
+                              </svg>
+                          </div>
+                          <div class="col-2 text-left" > <img  [src]="'https://shoedelivery.s3.us-west-2.amazonaws.com/communication/'+ item.productImage[p.key]" width="100px" height="60px" /> </div>
+                          <div class="col-3 text-left"> {{p.key}} </div>
+                          <div class="col-2 text-left"> {{p.value}} </div>
+                          <div class="col-1 text-left"> {{item.list[p.key]}}</div>
+                          <div class="col-2 text-left" *ngIf="item.list[p.key] != undefined">  &#x20B9;  {{item.list[p.key]  * p.value}}</div>
+                          <div class="col-2 text-left" *ngIf="item.list[p.key] == undefined">  N/A</div>
+
+                          <div class="col-1 text-left" *ngIf="item.list[p.key] != undefined && item.status == 'open'"><button class="btn" (click)="removeProduct(i,p.key, true,j)">Remove</button></div>
+                          <div class="col-1 text-left" *ngIf="item.list[p.key] == undefined && item.status == 'open'"><button class="btn" (click)="removeProduct(i,p.key, false,j)">Add</button></div>
+                          <div class="col-1 text-left" *ngIf= "item.status != 'open'"></div>
+                    </div>
+                    <div class="row mt-2" *ngIf="item.status == 'open'">
+                      <div class="col-1"> </div>
+                      <div class="col-2"> </div>
+                      <div class="col-4"> <b>Discount</b></div>
+                      <div class="col-2">  <input type="number" class="discountFeild" [(ngModel)]="item.discount != undefiend ? item.discount : discount" (input)="updateValue(i,$event.target.value)"/> </div>
+                      <div class="col-3"><button class="btn btn-danger ml-2" (click)="applyDiscount(item._id, i, j)">Apply</button> </div>
+                      </div>
+                    <div class="row mt-2">
+                      <div class="col-1"> </div>
+                      <div class="col-4"> </div>
+                      <div class="col-4"> <b>Total Amount</b></div>
+                      <div class="col-2" *ngIf="item.discount != undefined && item.discount != 0"> <del>&#x20B9; {{item.totalamount }}</del> <ins>&#x20B9; {{item.totalamount  - (item.discount != undefiend ? item.discount : discount)}}</ins></div>
+                      <div class="col-2" *ngIf="item.discount == undefined || item.discount == 0">  &#x20B9;{{item.totalamount}} </div>
+                      <div class="col-1"></div>
+                      </div>
+                      <div class="row mt-3">
+                        <div class="col-5"></div>
+                        <div class="col-4 text-left"><b>Shipping Address</b></div>
+                        <div class="col-3">{{item.address}}</div>
+                        </div>
+
+                  <div class="row mt-3">
+                      <div class="col-6"></div>
+                      <div class="col-6">
+                        <div class="row">
+                            <div class="col-12">
+                              <div class="row mt-2" *ngIf="item.status == 'open'">
+                                <div class="col-6 text-center">
+                                  <p><button class="btn btn-danger" (click)="updateStatus(item._id, 'acceptedByMerchant', i,j)" [disabled]="item.totalamount == 0">Accept</button></p>
+                                </div>
+                                <div class="col-6">
+                                  <p><button class="btn btn-danger" (click)="updateStatus(item._id, 'rejectByMerchant', i,j)">Reject</button></p>
+                                </div>
+                              </div>
+
+                              <div class="row mt-2" *ngIf="item.status == 'acceptedByMerchant'">
+                                <div class="col-12">
+                                  <p><button class="btn btn-danger ml-2"> Waiting for Retailer</button></p>
+                                </div>
+                              </div>
+
+                              <div class="row mt-2" *ngIf="item.status == 'invoicerequestByretailer'">
+                                <div class="col-6">
+                                  <p><button class="btn btn-danger ml-2"  (click)="InvoiceSend(item, 'close', i,j)">Accept</button></p>
+                                </div>
+                                <div class="col-6">
+                                  <p><button class="btn btn-danger ml-2" (click)="updateStatus(item._id, 'rejectByMerchant', i,j)">Reject</button></p>
+                                </div>
+                              </div>
+
+                              <div class="row mt-2" *ngIf="item.status == 'close'">
+                                <div class="col-12">
+                                  <p><button class="btn btn-danger ml-2">Closed</button></p>
+                                </div>
+                              </div>
+
+                              <div class="row mt-2" *ngIf="item.status == 'rejectByMerchant'">
+                                <div class="col-12">
+                                  <p><button class="btn btn-danger ml-2">Rejected</button></p>
+                                </div>
+                              </div>
+
+                              <div class="row mt-2" *ngIf="item.status == 'rejectByRetailer'">
+                                <div class="col-12">
+                                <p><button class="btn btn-danger ml-2">Reject by Retailer</button></p>
+                              </div>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                  </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+    </div>
+</div>
+</ng-template>
+
+<ng-template #mobileOrder>
+  <div class="row mt-4"  *ngFor="let order of orderList; index as j">
+    <div class="col-12 accordion" id="accordionExample">
+      <a data-toggle="collapse" href="#collapseExample{{j}}" aria-expanded="true" (click)="showCurrent(j)">
+          <div class="row headingBorder" >
+            <div class="col-4" style="text-align: left;" > <span class="trackIdComM"><b>Id: {{order.values[0].customOrderId}}</b></span></div>
+            <div class="col-7" style="text-align: left;">  <span class="trackIdComM"><b>Order Placed:   {{order.orderId |  date: 'short'}}</b></span> </div>
+
+
+          </div>
+        </a>
+
+          <div class="row mt-3 collapse" [ngClass]="(j == 0) ? 'show' : ''" id="collapseExample{{j}}">
+                <div class="col-12"  *ngFor="let item of order.values; index as i">
+                  <div class="card">
+
+                    <div class="card-body">
+                      <h5 class="card-title">  {{item.senderName}}</h5>
+
+                      <p class="card-text" (click)="redirectToMerchant(item.ownerNumber)"> See profile </p>
+                      <div class="row" *ngFor="let p of item.cart| keyvalue;">
+
+                        <div class="col-3">  <img  [src]="'https://shoedelivery.s3.us-west-2.amazonaws.com/communication/'+ item.productImage[p.key]" width="50" height="60px" /></div>
+                        <div class="col-9">
+                          <ul class="itemList">
+                                          <li style="text-transform: capitalize;">  <svg *ngIf="item.list[p.key] != undefined" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 16 16" fill="#00a94f" class="mr-1 pl-1"><path  fill="#00a94f" d="M11,3a8,8,0,1,0,8,8,7,7,0,0,0-.423-2.519l-1,.981A6.228,6.228,0,0,1,17.769,11,6.769,6.769,0,1,1,11,4.231a6.591,6.591,0,0,1,4.673,1.9l.865-.865A7.806,7.806,0,0,0,11,3Zm6.942,2.635L11,12.577,8.365,9.942l-.885.885L10.558,13.9l.442.423.442-.423,7.385-7.385Z" transform="translate(-3 -3)"></path></svg>
+                                            <svg *ngIf="item.list[p.key] == undefined" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" fill="#E64A19"
+                                              width="18.926px" height="18.926px" viewBox="0 0 94.926 94.926" style="enable-background:new 0 0 94.926 94.926;"
+                                              xml:space="preserve" class="mr-1 pl-1">
+                                              <g>
+                                                <path d="M55.931,47.463L94.306,9.09c0.826-0.827,0.826-2.167,0-2.994L88.833,0.62C88.436,0.224,87.896,0,87.335,0
+                                                  c-0.562,0-1.101,0.224-1.498,0.62L47.463,38.994L9.089,0.62c-0.795-0.795-2.202-0.794-2.995,0L0.622,6.096
+                                                  c-0.827,0.827-0.827,2.167,0,2.994l38.374,38.373L0.622,85.836c-0.827,0.827-0.827,2.167,0,2.994l5.473,5.476
+                                                  c0.397,0.396,0.936,0.62,1.498,0.62s1.1-0.224,1.497-0.62l38.374-38.374l38.374,38.374c0.397,0.396,0.937,0.62,1.498,0.62
+                                                  s1.101-0.224,1.498-0.62l5.473-5.476c0.826-0.827,0.826-2.167,0-2.994L55.931,47.463z"/>
+                                              </g>
+                                            </svg>
+                                           <b> {{p.key}}</b>
+                                          </li>
+                                          <li> <span class="ml-4">Qty {{p.value}}</span></li>
+
+                                          <li>
+                                            <span class="ml-4" *ngIf="item.list[p.key] != undefined"> <b>&#x20B9;  {{item.list[p.key]  * p.value}}</b> </span>
+                                            <span class="ml-4" *ngIf="item.list[p.key] == undefined"> <b>N/A</b> </span>
+                                          </li>
+                                          <li *ngIf="item.list[p.key] != undefined && item.status == 'open'"><button class="btn" (click)="removeProduct(i,p.key, true,j)">Remove</button></li>
+                                          <li *ngIf="item.list[p.key] == undefined && item.status == 'open'"><button class="btn" (click)="removeProduct(i,p.key, false,j)">Add</button></li>
+
+                                        </ul>
+                        </div>
+
+                      </div>
+
+
+                      <div class="row mt-2">
+                        <div class="col-4 footerM" style="color: #78BE20;" *ngIf="item.status == 'open'"> <b>Discount</b></div>
+                            <div class="col-4"> <input type="number" class="discountFeild" [(ngModel)]="item.discount != undefiend ? item.discount : discount" (input)="updateValue(i,$event.target.value)"/> </div>
+                            <div class="col-4"><button class="btn btn-danger applyBtmM" (click)="applyDiscount(item._id, i, j)">Apply</button> </div>
+
+                        </div>
+                        <div class="row mt-2">
+
+                              <div class="col-4"> <b>Total</b></div>
+                              <div class="col-8" *ngIf="item.discount != undefined && item.discount != 0"> <del>&#x20B9; {{item.totalamount }}</del> <ins>&#x20B9; {{item.totalamount  - (item.discount != undefiend ? item.discount : discount)}}</ins></div>
+                              <div class="col-8" *ngIf="item.discount == undefined || item.discount == 0">  &#x20B9;{{item.totalamount}} </div>
+
+                        </div>
+
+                        <div class="row mt-3">
+
+                          <div class="col-4 text-left footerM"><b> Address</b></div>
+                          <div class="col-8 footerM">{{item.address}}</div>
+                        </div>
+
+
+
+
+                            <div class="row mt-2">
+                                <div class="col-12">
+                                  <div class="row mt-2" *ngIf="item.status == 'open'">
+                                    <div class="col-6 text-center">
+                                      <p><button class="btn btn-danger" (click)="updateStatus(item._id, 'acceptedByMerchant', i,j)" [disabled]="item.totalamount == 0">Accept</button></p>
+                                    </div>
+                                    <div class="col-6">
+                                      <p><button class="btn btn-danger" (click)="updateStatus(item._id, 'rejectByMerchant', i,j)">Reject</button></p>
+                                    </div>
+                                  </div>
+
+                                  <div class="row mt-2" *ngIf="item.status == 'acceptedByMerchant'">
+                                    <div class="col-12">
+                                      <p><button class="btn btn-danger ml-2"> Waiting for Retailer</button></p>
+                                    </div>
+                                  </div>
+
+                                  <div class="row mt-2" *ngIf="item.status == 'invoicerequestByretailer'">
+                                    <div class="col-6">
+                                      <p><button class="btn btn-danger ml-2"  (click)="InvoiceSend(item, 'close', i,j)">Accept</button></p>
+                                    </div>
+                                    <div class="col-6">
+                                      <p><button class="btn btn-danger ml-2" (click)="updateStatus(item._id, 'rejectByMerchant', i,j)">Reject</button></p>
+                                    </div>
+                                  </div>
+
+                                  <div class="row mt-2" *ngIf="item.status == 'close'">
+                                    <div class="col-12">
+                                      <a class="btn btn-danger" style="font-size: 11px;" data-toggle="collapse" href="#collapseExample2{{i}}" role="button" aria-expanded="false" aria-controls="collapseExample2">
+                                        Show Rating
+                                      </a>
+                                    </div>
+                                  </div>
+
+                                  <div class="row mt-2" *ngIf="item.status == 'rejectByMerchant'">
+                                    <div class="col-12">
+                                      <p><button class="btn btn-danger ml-2">Rejected</button></p>
+                                    </div>
+                                  </div>
+
+                                  <div class="row mt-2" *ngIf="item.status == 'rejectByRetailer'">
+                                    <div class="col-12">
+                                    <p><button class="btn btn-danger ml-2">Reject by Retailer</button></p>
+                                  </div>
+                                </div>
+                                </div>
+                            </div>
+
+
+                            <div class="row">
+                              <div class="col-12">
+                                      <div class="collapse" id="collapseExample2{{i}}">
+                                        <div class="card card-body">
+                                                  <div class="row">
+                                                          <div class="col-sm-12 col-md-4">Average Delivery time taken</div>
+                                                          <div class="col-sm-12 col-md-8">
+                                                            <div class="input-group">
+                                                              <div id="radioBtn" class="btn-group">
+                                                                <a class="btn btn-danger btn-sm" [ngClass]="(item.averageDelivery == 1) ? 'active' : 'notActive'" (click)="setRating('averageDelivery', 1, i,j)">Resonable</a>
+                                                                <a class="btn btn-danger btn-sm" [ngClass]="(item.averageDelivery == 3) ? 'active' : 'notActive'" (click)="setRating('averageDelivery', 3, i,j)">Late</a>
+                                                                <a class="btn btn-danger btn-sm" [ngClass]="(item.averageDelivery == 5) ? 'active' : 'notActive'" (click)="setRating('averageDelivery', 5, i,j)">Fast</a>
+                                                              </div>
+                                                            </div>
+                                                          </div>
+                                                  </div>
+                                                  <div class="row mt-2">
+                                                      <div class="col-sm-12 col-md-4">Product Qulaity</div>
+                                                      <div class="col-sm-12 col-md-8">
+                                                        <div class="input-group">
+                                                          <div id="radioBtn" class="btn-group">
+                                                            <a class="btn btn-danger btn-sm"  [ngClass]="(item.productQuality == 2) ? 'active' : 'notActive'" (click)="setRating('productQuality', 2, i,j)">Poor</a>
+                                                            <a class="btn btn-danger btn-sm" [ngClass]="(item.productQuality == 3) ? 'active' : 'notActive'" (click)="setRating('productQuality', 3, i,j)">Moderate</a>
+                                                            <a class="btn btn-danger btn-sm" [ngClass]="(item.productQuality == 4) ? 'active' : 'notActive'" (click)="setRating('productQuality', 4, i,j)">Good</a>
+                                                            <a class="btn btn-danger btn-sm" [ngClass]="(item.productQuality == 5) ? 'active' : 'notActive'" (click)="setRating('productQuality', 5, i,j)">Very Good</a>
+                                                          </div>
+                                                        </div>
+                                                      </div>
+                                                  </div>
+
+                                                  <div class="row mt-2">
+                                                    <div class="col-sm-12 col-md-4">Product Price</div>
+                                                    <div class="col-sm-12 col-md-8">
+                                                      <div class="input-group">
+                                                        <div id="radioBtn" class="btn-group">
+                                                          <a class="btn btn-danger btn-sm" [ngClass]="(item.productPrice == 2) ? 'active' : 'notActive'" (click)="setRating('productPrice', 2, i,j)">Low</a>
+                                                          <a class="btn btn-danger btn-sm" [ngClass]="(item.productPrice == 3) ? 'active' : 'notActive'" (click)="setRating('productPrice', 3, i,j)">Moderate</a>
+                                                          <a class="btn btn-danger btn-sm" [ngClass]="(item.productPrice == 4) ? 'active' : 'notActive'" (click)="setRating('productPrice', 4, i,j)">Reasonable</a>
+                                                          <a class="btn btn-danger btn-sm" [ngClass]="(item.productPrice == 5) ? 'active' : 'notActive'" (click)="setRating('productPrice', 5, i,j)">Expensive</a>
+                                                        </div>
+                                                      </div>
+                                                    </div>
+                                                  </div>
+
+                                                <div class="row mt-2">
+                                                  <div class="col-sm-12 col-md-4">Staff behaviour</div>
+                                                  <div class="col-sm-12 col-md-8">
+                                                    <div class="input-group">
+                                                      <div id="radioBtn" class="btn-group">
+                                                        <a class="btn btn-danger btn-sm" [ngClass]="(item.staffBehaviour == 2) ? 'active' : 'notActive'" (click)="setRating('staffBehaviour', 2, i, j)">Poor</a>
+                                                        <a class="btn btn-danger btn-sm" [ngClass]="(item.staffBehaviour == 3) ? 'active' : 'notActive'" (click)="setRating('staffBehaviour', 3, i, j)">Moderate</a>
+                                                        <a class="btn btn-danger btn-sm" [ngClass]="(item.staffBehaviour == 4) ? 'active' : 'notActive'" (click)="setRating('staffBehaviour', 4, i, j)">Good</a>
+                                                        <a class="btn btn-danger btn-sm" [ngClass]="(item.staffBehaviour == 5) ? 'active' : 'notActive'" (click)="setRating('staffBehaviour', 5, i, j)">Very Good</a>
+
+                                                      </div>
+                                                    </div>
+                                                  </div>
+                                              </div>
+                                              <div class="row mt-2">
+                                                    <div class="col-sm-12 col-md-4">Staff helping</div>
+                                                    <div class="col-sm-12 col-md-8">
+                                                      <div class="input-group">
+                                                        <div id="radioBtn" class="btn-group">
+                                                          <a class="btn btn-danger btn-sm" [ngClass]="(item.staffHelping == 2) ? 'active' : 'notActive'" (click)="setRating('staffHelping', 2, i, j)">Poor</a>
+                                                          <a class="btn btn-danger btn-sm" [ngClass]="(item.staffHelping == 3) ? 'active' : 'notActive'" (click)="setRating('staffHelping', 3, i, j)">Moderate</a>
+                                                          <a class="btn btn-danger btn-sm" [ngClass]="(item.staffHelping == 4) ? 'active' : 'notActive'" (click)="setRating('staffHelping', 4, i, j)">Good</a>
+                                                          <a class="btn btn-danger btn-sm" [ngClass]="(item.staffHelping == 5) ? 'active' : 'notActive'" (click)="setRating('staffHelping', 5, i, j)">Very Good</a>
+                                                        </div>
+                                                      </div>
+                                                    </div>
+                                                </div>
+
+                                            <div class="row mt-2">
+                                              <div class="col-sm-12 col-md-4">Payment ease</div>
+                                              <div class="col-sm-12 col-md-8">
+                                                <div class="input-group">
+                                                  <div id="radioBtn" class="btn-group">
+                                                    <a class="btn btn-danger btn-sm" [ngClass]="(item.paymentEase == 2) ? 'active' : 'notActive'" (click)="setRating('paymentEase', 2, i, j)">Poor</a>
+                                                    <a class="btn btn-danger btn-sm" [ngClass]="(item.paymentEase == 3) ? 'active' : 'notActive'" (click)="setRating('paymentEase', 3, i, j)">Moderate</a>
+                                                    <a class="btn btn-danger btn-sm" [ngClass]="(item.paymentEase == 4) ? 'active' : 'notActive'" (click)="setRating('paymentEase', 4, i, j)">Good</a>
+                                                    <a class="btn btn-danger btn-sm" [ngClass]="(item.paymentEase == 5) ? 'active' : 'notActive'" (click)="setRating('paymentEase', 5, i, j)">Very Good</a>
+
+                                                  </div>
+                                                </div>
+                                              </div>
+                                          </div>
+
+                                          <div class="row mt-2">
+                                            <div class="col-sm-12 col-md-4">Refund Rating</div>
+                                            <div class="col-sm-12 col-md-8">
+                                              <div class="input-group">
+                                                <div id="radioBtn" class="btn-group">
+                                                  <a class="btn btn-danger btn-sm" [ngClass]="(item.refundRating == 1) ? 'active' : 'notActive'" (click)="setRating('refundRating', 1, i, j)">1</a>
+                                                  <a class="btn btn-danger btn-sm" [ngClass]="(item.refundRating == 2) ? 'active' : 'notActive'" (click)="setRating('refundRating', 2, i, j)">2</a>
+                                                  <a class="btn btn-danger btn-sm" [ngClass]="(item.refundRating == 3) ? 'active' : 'notActive'" (click)="setRating('refundRating', 3, i, j)">3</a>
+                                                  <a class="btn btn-danger btn-sm" [ngClass]="(item.refundRating == 4) ? 'active' : 'notActive'" (click)="setRating('refundRating', 4, i, j)">4</a>
+                                                  <a class="btn btn-danger btn-sm" [ngClass]="(item.refundRating == 5) ? 'active' : 'notActive'" (click)="setRating('refundRating', 5, i, j)">5</a>
+
+                                                </div>
+                                              </div>
+                                            </div>
+                                        </div>
+                                        <div class="row mt-2">
+                                          <div class="col-sm-12 col-md-4">Return Rating</div>
+                                          <div class="col-sm-12 col-md-8">
+                                            <div class="input-group">
+                                              <div id="radioBtn" class="btn-group">
+                                                <a class="btn btn-danger btn-sm" [ngClass]="(item.returnRating == 1) ? 'active' : 'notActive'" (click)="setRating('returnRating', 1, i, j)">1</a>
+                                                <a class="btn btn-danger btn-sm" [ngClass]="(item.returnRating == 2) ? 'active' : 'notActive'" (click)="setRating('returnRating', 2, i, j)">2</a>
+                                                <a class="btn btn-danger btn-sm" [ngClass]="(item.returnRating == 3) ? 'active' : 'notActive'" (click)="setRating('returnRating', 3, i, j)">3</a>
+                                                <a class="btn btn-danger btn-sm" [ngClass]="(item.returnRating == 4) ? 'active' : 'notActive'" (click)="setRating('returnRating', 4, i, j)">4</a>
+                                                <a class="btn btn-danger btn-sm" [ngClass]="(item.returnRating == 5) ? 'active' : 'notActive'" (click)="setRating('returnRating', 5, i, j)">5</a>
+
+                                              </div>
+                                            </div>
+                                          </div>
+                                      </div>
+
+                                      <div class="row mt-2" *ngIf="item.ratingDone != true" >
+                                        <div class="col-sm-12 col-md-6"></div>
+                                        <div class="col-sm-12 col-md-6"><button class="btn btn-danger btn-sm" (click)= "submitRating(item,i, j)">Submit</button></div>
+                                          </div>
+
+                                        </div>
+                                      </div>
+                              </div>
+                            </div>
+                    </div>
+
+                  </div>
+                  </div>
+
+          </div>
+
+    </div>
+  </div>
+  <!-- <div class="row mt-3"  *ngFor="let order of orderList; index as j">
+    <div class="col-12 accordion" id="accordionExample">
+      <a data-toggle="collapse" href="#collapseExample1{{j}}" aria-expanded="true" (click)="showCurrent(j)">
+          <div class="row headingBorder" >
+            <div class="col-md-4 col-sm-6" style="text-align: left;" >
+              <span><b>Order Id: {{order.orderId}}</b></span>
+            </div>
+            <div class="col-md-4 col-sm-12">  <span class="trackIdCom"> <b> Date : {{order.orderId |  date: 'mediumDate'}}</b></span> </div>
+            <div class="col-md-2 col-sm-12"> <span class="trackIdCom"> <b> Time: {{order.orderId |  date: 'shortTime'}}</b></span> </div>
+            <div class="col-md-2 col-sm-12"> <span class="trackIdCom"> </span> orders({{order.values.length}})</div>
+          </div>
+        </a>
+          <div class="row mt-3" [ngClass]="(j == 0) ? 'show' : ''" id="collapseExample1{{j}}">
+            <div class="col-12 mt-2" >
+              <div class="col-12"  *ngFor="let item of order.values; index as i">
+                <div class="card">
+                  <div class="card-body">
+                    <h5 class="card-title"> Order From:  {{item.senderName}}</h5>
+                    <div class="row">
+                      <div class="col-md-1"><b>Satus</b></div>
+                      <div class="col-md-2"><b>Image</b></div>
+                      <div class="col-md-3"><b>Name</b></div>
+                      <div class="col-md-2"><b>Qantity</b></div>
+                      <div class="col-md-1"><b>Price</b></div>
+                      <div class="col-md-2"><b>Total</b></div>
+                      <div class="col-md-1"></div>
+                    </div>
+                    <div class="row mt-2" *ngFor="let p of item.cart| keyvalue;">
+                          <div class="col-1">
+                              <svg *ngIf="item.list[p.key] != undefined" _ngcontent-shv-c64=""  xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 16 16" fill="#00a94f" class="mr-1 pl-1"><path _ngcontent-shv-c64="" fill="#00a94f" d="M11,3a8,8,0,1,0,8,8,7,7,0,0,0-.423-2.519l-1,.981A6.228,6.228,0,0,1,17.769,11,6.769,6.769,0,1,1,11,4.231a6.591,6.591,0,0,1,4.673,1.9l.865-.865A7.806,7.806,0,0,0,11,3Zm6.942,2.635L11,12.577,8.365,9.942l-.885.885L10.558,13.9l.442.423.442-.423,7.385-7.385Z" transform="translate(-3 -3)"></path></svg>
+                              <svg *ngIf="item.list[p.key] == undefined" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" fill="#E64A19"
+                                width="20.926px" height="20.926px" viewBox="0 0 94.926 94.926" style="enable-background:new 0 0 94.926 94.926;"
+                                xml:space="preserve" class="mr-1 pl-1">
+                                <g>
+                                  <path d="M55.931,47.463L94.306,9.09c0.826-0.827,0.826-2.167,0-2.994L88.833,0.62C88.436,0.224,87.896,0,87.335,0
+                                    c-0.562,0-1.101,0.224-1.498,0.62L47.463,38.994L9.089,0.62c-0.795-0.795-2.202-0.794-2.995,0L0.622,6.096
+                                    c-0.827,0.827-0.827,2.167,0,2.994l38.374,38.373L0.622,85.836c-0.827,0.827-0.827,2.167,0,2.994l5.473,5.476
+                                    c0.397,0.396,0.936,0.62,1.498,0.62s1.1-0.224,1.497-0.62l38.374-38.374l38.374,38.374c0.397,0.396,0.937,0.62,1.498,0.62
+                                    s1.101-0.224,1.498-0.62l5.473-5.476c0.826-0.827,0.826-2.167,0-2.994L55.931,47.463z"/>
+                                </g>
+                              </svg>
+                          </div>
+                          <div class="col-2 text-left" > <img [src]="api.delear+ 'uploads/comunication/medium/'+ item.productImage[p.key]" width="100px" height="60px" /> </div>
+                          <div class="col-3 text-left"> {{p.key}} </div>
+                          <div class="col-2 text-left"> {{p.value}} </div>
+                          <div class="col-1 text-left"> {{item.list[p.key]}}</div>
+                          <div class="col-2 text-left" *ngIf="item.list[p.key] != undefined">  &#x20B9;  {{item.list[p.key]  * p.value}}</div>
+                          <div class="col-2 text-left" *ngIf="item.list[p.key] == undefined">  N/A</div>
+
+                          <div class="col-1 text-left" *ngIf="item.list[p.key] != undefined && item.status == 'open'"><button class="btn" (click)="removeProduct(i,p.key, true,j)">Remove</button></div>
+                          <div class="col-1 text-left" *ngIf="item.list[p.key] == undefined && item.status == 'open'"><button class="btn" (click)="removeProduct(i,p.key, false,j)">Add</button></div>
+                          <div class="col-1 text-left" *ngIf= "item.status != 'open'"></div>
+                    </div>
+                    <div class="row mt-2" *ngIf="item.status == 'open'">
+                      <div class="col-1"> </div>
+                      <div class="col-2"> </div>
+                      <div class="col-4"> <b>Discount</b></div>
+                      <div class="col-2">  <input type="number" class="discountFeild" [(ngModel)]="item.discount != undefiend ? item.discount : discount" (input)="updateValue(i,$event.target.value)"/> </div>
+                      <div class="col-3"><button class="btn btn-danger ml-2" (click)="applyDiscount(item._id, i, j)">Apply</button> </div>
+                      </div>
+                    <div class="row mt-2">
+                      <div class="col-1"> </div>
+                      <div class="col-4"> </div>
+                      <div class="col-4"> <b>Total Amount</b></div>
+                      <div class="col-2" *ngIf="item.discount != undefined && item.discount != 0"> <del>&#x20B9; {{item.totalamount }}</del> <ins>&#x20B9; {{item.totalamount  - (item.discount != undefiend ? item.discount : discount)}}</ins></div>
+                      <div class="col-2" *ngIf="item.discount == undefined || item.discount == 0">  &#x20B9;{{item.totalamount}} </div>
+                      <div class="col-1"></div>
+                      </div>
+                      <div class="row mt-3">
+                        <div class="col-5"></div>
+                        <div class="col-4 text-left"><b>Shipping Address</b></div>
+                        <div class="col-3">{{item.address}}</div>
+                        </div>
+
+                  <div class="row mt-3">
+                      <div class="col-6"></div>
+                      <div class="col-6">
+                        <div class="row">
+                            <div class="col-12">
+                              <div class="row mt-2" *ngIf="item.status == 'open'">
+                                <div class="col-6 text-center">
+                                  <p><button class="btn btn-danger" (click)="updateStatus(item._id, 'acceptedByMerchant', i,j)" [disabled]="item.totalamount == 0">Accept</button></p>
+                                </div>
+                                <div class="col-6">
+                                  <p><button class="btn btn-danger" (click)="updateStatus(item._id, 'rejectByMerchant', i,j)">Reject</button></p>
+                                </div>
+                              </div>
+
+                              <div class="row mt-2" *ngIf="item.status == 'acceptedByMerchant'">
+                                <div class="col-12">
+                                  <p><button class="btn btn-danger ml-2"> Waiting for Retailer</button></p>
+                                </div>
+                              </div>
+
+                              <div class="row mt-2" *ngIf="item.status == 'invoicerequestByretailer'">
+                                <div class="col-6">
+                                  <p><button class="btn btn-danger ml-2"  (click)="InvoiceSend(item, 'close', i,j)">Send Invoice</button></p>
+                                </div>
+                                <div class="col-6">
+                                  <p><button class="btn btn-danger ml-2" (click)="updateStatus(item._id, 'rejectByMerchant', i,j)">Reject</button></p>
+                                </div>
+                              </div>
+
+                              <div class="row mt-2" *ngIf="item.status == 'close'">
+                                <div class="col-12">
+                                  <p><button class="btn btn-danger ml-2">Closed</button></p>
+                                </div>
+                              </div>
+
+                              <div class="row mt-2" *ngIf="item.status == 'rejectByMerchant'">
+                                <div class="col-12">
+                                  <p><button class="btn btn-danger ml-2">Rejected</button></p>
+                                </div>
+                              </div>
+
+                              <div class="row mt-2" *ngIf="item.status == 'rejectByRetailer'">
+                                <div class="col-12">
+                                <p><button class="btn btn-danger ml-2">Reject by Retailer</button></p>
+                              </div>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                  </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+    </div>
+</div> -->
+</ng-template>

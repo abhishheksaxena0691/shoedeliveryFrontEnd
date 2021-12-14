@@ -120,11 +120,11 @@
         <owl-carousel
             [options]="cOptions" [items]="billDData" [carouselClasses]="['owl-theme', 'row', 'sliding']">
             <fieldset *ngFor="let bImg of billDData; let i = index">
-                <legend>{{bImg.billDetails.deportment}} {{bImg.billDetails.genDate | date: 'medium'}} {{bImg.billDetails.user}}</legend>
+              <legend>{{bImg.billDetails.title}} {{bImg.billDetails.genDate | date: 'medium'}} {{bImg.retailerMobile}}</legend>
 
 
 
-                <img [src]="serverPath+'/pdfBills/images/'+bImg.billDetails.billImg[0].name" alt="{{bImg.billDetails.billImg[0].name}}" (click)="showBill(i)" />
+                <img [src]="'https://shoedelivery.s3.us-west-2.amazonaws.com/invoice/'+bImg.billDetails.billImg[0].name" alt="{{bImg.billDetails.billImg[0].name}}" (click)="showBill(i)" />
                 <nav class="menuBtn d-flex flex-wrap align-items-center justify-content-between">
 
                 </nav>

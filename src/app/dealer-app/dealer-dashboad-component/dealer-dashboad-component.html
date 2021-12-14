@@ -3,12 +3,12 @@
 <section class="container py-4">
     <nav id="toggleMenu" class="d-flex justify-content-between align-items-end">
         <a [ngClass]="paid ? 'active' : ''" (click)="getMonthData(true)"> Paid </a>
-        <a [ngClass]="!paid ? 'active' : ''"  (click)="unpaid()">Unpaid</a>
+        <a [ngClass]="!paid ? 'active' : ''"  (click)="unpaid()" #closeBtn>Unpaid</a>
     </nav>
     <a (click)="toggleFilter()" class="filterNow"><span class="filter"></span> Filter</a>
     <div class="p-4" id="filterSec" >
         <div *ngIf="paid">
-            <owl-carousel [options]="menuOptions" [items]="monthData" [carouselClasses]="['owl-theme', 'row', 'sliding']" *ngIf="monthDataDh">
+            <owl-carousel [options]="menuOptions" [carouselClasses]="['owl-theme', 'row', 'sliding']" *ngIf="monthDataDh">
                 <div class="optionList" [ngClass]="{'active': currentActiveTopTab === 'cash'}" (click)="sltArea('cash')">
                         <strong>Cash</strong>
                         <i class="payee"></i>
@@ -128,17 +128,20 @@
         <owl-carousel
             [options]="cOptions" [items]="billDData" [carouselClasses]="['owl-theme', 'row', 'sliding']">
             <fieldset *ngFor="let bImg of billDData; let i = index">
-                <legend>{{bImg.billDetails.deportment}} {{bImg.billDetails.genDate | date: 'medium'}} {{bImg.billDetails.user}}</legend>
+                <legend>{{bImg.billDetails.title}} {{bImg.billDetails.genDate | date: 'medium'}} {{bImg.retailerMobile}}</legend>
                 <nav class="menuBtn d-flex justify-content-between mb-4">
+                  <a (click)="openDelivery(deliveryTemplate, bImg, bImg.paymentMode)" class="btn" *ngIf="bImg.category !== 'delivery'"><i class="delivery"></i> Delivery</a>
+                  <a (click)="openDelivery(deliveryTemplate, bImg, bImg.paymentMode)" class="btn" *ngIf="((bImg.category == 'delivery') && (bImg.invoiceStatus == undefined ||  bImg.invoiceStatus == 0 ||  bImg.invoiceStatus == 1))"><i class="delivery"></i> Delivery Inprogress</a>
+                  <a  class="btn nonActicebutton" *ngIf="bImg.category == 'delivery' && bImg.invoiceStatus == 4"><i class="delivery"></i> Delivered</a>
+                  <a  class="btn" *ngIf="bImg.category == 'delivery' && bImg.invoiceStatus >1 && bImg.invoiceStatus < 4"><i class="delivery"></i> Delivery Inprogress</a>
 
-                    <a (click)="openDelivery(deliveryTemplate, bImg._id, bImg.paymentMode)" class="btn" *ngIf="bImg.category !== 'delivery'"><i class="delivery"></i> Delivery</a>
 
-                    <a  class="btn nonActicebutton" *ngIf="bImg.category == 'delivery'"><i class="delivery"></i> Delivered</a>
-                    <a class="btn nonActicebutton" *ngIf="bImg.paymentMode !== 'credit' && bImg.payStatus"><i class="forward"></i> Payed</a>
+                    <a class="btn nonActicebutton" *ngIf="bImg.paymentMode !== 'credit' && bImg.payStatus"><i class="forward"></i> Paid</a>
                     <a (click)="openMoveTocredit(moveToCredit, bImg._id)" class="btn" *ngIf="bImg.paymentMode !== 'credit' && !bImg.payStatus"><i class="forward"></i> Move to credit</a>
-                    <a  class="btn" *ngIf="bImg.paymentMode === 'credit'"><i class="forward"></i> Credited</a>
+                    <a  class="btn nonActicebutton" *ngIf="bImg.paymentMode === 'credit'"><i class="forward"></i> Credited</a>
                 </nav>
-                <img [src]="serverPath+'/pdfBills/images/'+bImg.billDetails.billImg[0].name" alt="{{bImg.billDetails.billImg[0].name}}" (click)="showBill(i)" />
+
+                <img [src]="'https://shoedelivery.s3.us-west-2.amazonaws.com/invoice/'+bImg.billDetails.billImg[0].name" alt="{{bImg.billDetails.billImg[0].name}}" (click)="showBill(i)" />
                 <nav class="menuBtn d-flex flex-wrap align-items-center justify-content-between" *ngIf="!bImg.payStatus">
                   <form class="d-flex align-items-center justify-content-between ml-auto">
                       <input type="text" placeholder="Rs." [value]="cleanPrice(bImg.billDetails.total)" disabled />
@@ -156,13 +159,37 @@
 <app-side-bar></app-side-bar>
 
 <ng-template #template>
-  <div class="modal-header">
-    <h4 class="modal-title pull-left">Select product</h4>
+  <div class="modal-header" *ngIf="screenSecond">
+    <h4 class="modal-title pull-left">{{companyName}}</h4>
+    <!-- <h5 class="modal-title pull-left">Select product</h5> -->
     <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
-  <div class="modal-body">
+  <div class="modal-body" *ngIf="screenFirst">
+    <div class="row mt-4">
+      <div class="col-4"><b>Mobile Number</b></div>
+      <div class="col-8">
+        <input type="text" value="" placeholder="Enter the mobile number of retailer" (input)="setMobileNumber($event.target.value)"/>
+      </div>
+    </div>
+
+    <div class="row mt-4" *ngIf="verificationDone">
+
+        <div class="col-4"><b>Retailer Name</b></div>
+        <div class="col-8" *ngIf="delearDetail !== null"> {{delearDetail?.fstName}} {{delearDetail?.lstName}}</div>
+        <div class="col-8" *ngIf="delearDetail == null"> No retailer found</div>
+
+        <div class="col-4"><b>Retailer Email</b></div>
+        <div class="col-8" *ngIf="delearDetail !== null"> {{delearDetail?.email}}</div>
+        <div class="col-8" *ngIf="delearDetail == null"> No retailer found</div>
+
+    </div>
+
+    <button type="submit" class="mt-4" [disabled]="setMobile?.length != 10" (click)="verifyMobile()" *ngIf="!verificationDone || delearDetail == null">Verify Mobile</button>
+    <button type="submit" class="mt-4"  (click)="moveToSecondScreen()" *ngIf="verificationDone && delearDetail != null">Continue</button>
+  </div>
+  <div class="modal-body" *ngIf="screenSecond">
     <div *ngIf="dMsg" class="alert-success">{{dMsg.msg}}</div>
     <ng-select
         [items]="productList"
@@ -178,10 +205,8 @@
         (change)="setQuantity()">
       </ng-select>
       <div class="container mt-2">
-        <div class="row mt-4" *ngIf="selectedProduct.length > 0">
-          <div class="col-4"><b>Mobile Number</b></div>
-          <div class="col-8"><input type="text" value="" placeholder="Enter the mobile number of retailer"></div>
-        </div>
+
+
         <div class="row setBoarder mt-4" *ngIf="selectedProduct.length > 0">
           <div class="col-4"><b>Product Name</b></div>
           <div class="col-4"><b>Price</b></div>
@@ -200,7 +225,7 @@
           <div class="col-4"><b> &#x20B9; {{totalPrice}}</b></div>
         </div>
       </div>
-    <button type="submit" class="mt-4" [disabled]="dBtm" (click)="NewDealerBill()">Send</button>
+    <button type="submit" class="mt-4" [disabled]="dBtm && totalPrice != 0" (click)="NewDealerBill()">Send</button>
 
 
   </div>
@@ -226,14 +251,11 @@
             <option value="other">Other</option>
             <option value="credit">Credit</option>
         </select>
-        <!-- <div class="alert alert-danger inputMsg" role="alert" *ngIf="dSubmit && dFrm.payMode.errors">
-            <div *ngIf="dFrm.payMode.errors.required">Please mention your payment mode</div>
-        </div> -->
-        <!-- <button type="submit" class="mt-4"  [disabled]="dBtm"><a class="btn">Update</a></button> -->
         <button type="submit" class="mt-4 buttonClass" [disabled]="dBtm">Update</button>
     </form>
   </div>
 </ng-template>
+
 <ng-template #deliveryTemplate>
   <div class="modal-header">
     <h4 class="modal-title pull-left">Delivered</h4>
@@ -253,7 +275,7 @@
         <h4>Payment method</h4>
         <p *ngIf="paid">{{paymentModeForCredit === 'other' ? 'No Payment Found' : paymentModeForCredit}}</p>
         <select formControlName="payMode" *ngIf="!paid">
-          <option value="">Select</option>
+          <option value="" disabled>Select</option>
           <option value="">Pay on Delivery</option>
           <option value="Net Banking">Net Banking</option>
           <option value="cash">Cash</option>

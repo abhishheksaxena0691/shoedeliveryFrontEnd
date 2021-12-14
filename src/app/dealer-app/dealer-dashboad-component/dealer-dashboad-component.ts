@@ -1,3 +1,4 @@
+import { AuthService } from './../../guard/auth.service';
 
 import { DeliveryService } from './../../delivery/delivery.service';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
@@ -5,7 +6,7 @@ import { FilterService } from '../../shared/filter.service';
 import { DashboardService } from '../../dashboard/dashboard.service';
 
 import { Validators, FormGroup, FormBuilder } from '@angular/forms';
-import { Component, OnInit, TemplateRef } from '@angular/core';
+import { Component, ElementRef, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { Subject } from 'rxjs/internal/Subject';
 import {
   debounceTime,
@@ -32,7 +33,7 @@ export interface col4Type {
 })
 
 export class DealerDashboadComponent implements OnInit {
-
+  @ViewChild('closeBtn', {static: false}) closeBtn :ElementRef;
   modalRef: BsModalRef;
   paid: boolean = true;
   deliveryFrm: FormGroup;
@@ -112,7 +113,13 @@ export class DealerDashboadComponent implements OnInit {
   paymentModeForCredit: any;
   totalPrice: any = 0;
   newBill: boolean;
-  constructor(private formBuilder: FormBuilder, private fetch: DashboardService, private modalService: BsModalService, private filterSrv: FilterService, public deliveryService: DeliveryService) {
+  setMobile: any;
+  delearDetail: any;
+  screenFirst = true;
+  screenSecond = false;
+  verificationDone: boolean = false;
+  companyName: string;
+  constructor(private formBuilder: FormBuilder, private fetch: DashboardService, private modalService: BsModalService, private filterSrv: FilterService, public deliveryService: DeliveryService, public authService: AuthService) {
     this.productChange
     .pipe(debounceTime(900), distinctUntilChanged())
     .subscribe((value) => {
@@ -160,6 +167,10 @@ export class DealerDashboadComponent implements OnInit {
 
   openModal(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(template);
+    this.companyName = this.authService.getCompanyName();
+    this.screenFirst = true;
+    this.screenSecond = false;
+    this.verificationDone = false;
   }
 
   openDelivery(template: TemplateRef<any>, billId: any, paymentType: any) {
@@ -194,29 +205,28 @@ export class DealerDashboadComponent implements OnInit {
     this.billDData = [];
     this.monthData = [];
     this.selectArea = area;
-
     this.selectSector = null;
     this.selectBrand = null;
     this.weekData = null;
     this.col3Data = [];
-      this.col4Data = [];
-      this.currentActiveTopTab = area;
-      this.monthDataDh =[];
-      console.log(this.filterSrv.monthFilter);
+    this.col4Data = [];
+    this.currentActiveTopTab = area;
+    this.monthDataDh =[];
 
+    if (this.dataResult[area] !== undefined) {
       this.filterSrv.monthFilter.forEach(mth => {
         this.monthDataDh.push(this.filterSrv.filterByDateCash(this.dataResult[area], new Date().getTime(), mth))
       });
-      console.log(this.monthDataDh);
-      this.monthData =[];
-      this.monthData = this.monthDataDh;
+    }
+    this.monthData =[];
+    this.weekData = [];
+    this.daysData = [];
+    this.upiPaymmentArray = [];
+    this.monthData = this.monthDataDh;
+    if (this.dataResult[area] !== undefined) {
       this.billDData =  this.monthData[0].list;
+    }
 
-      // for (var i = 0; i < this.monthData.length; i++) {
-      //   this.billDData =  this.billDData.concat(this.monthData[i].list);
-      //   }
-
-        console.log(this.billDData);
   }
 
   sltMonth(month: number): void {
@@ -237,7 +247,7 @@ export class DealerDashboadComponent implements OnInit {
 
 
   getProfileInfo():void {
-    this.fetch.getProfInfo().subscribe(
+    this.fetch.getProfInfo(this.authService.getLogged()).subscribe(
       res => { this.profInfo = res; },
       err => { this.pgMsg = {msg: err.error, alert: 'alert-danger'}; }
     )
@@ -307,8 +317,11 @@ export class DealerDashboadComponent implements OnInit {
               }, 0)
             }
           }
+          console.log(this.paid);
           if (!this.paid) {
-            this.unpaid();
+            setTimeout(() => {
+              this.closeBtn.nativeElement.click();
+            },2000);
           }
       },
       err => { this.pgMsg = {msg: err.error, alert: 'alert-danger'}; }
@@ -317,7 +330,7 @@ export class DealerDashboadComponent implements OnInit {
 
   unpaid() {
     console.log(this.allData);
-
+    this.monthData =[];
     this.filter= true;
     this.billDData = [];
     this.weekData = [];
@@ -327,11 +340,11 @@ export class DealerDashboadComponent implements OnInit {
     this.allData = this.allData.filter((data: any) => data.payStatus === false);
     this.billDData = this.allData;
     this.monthDataDh = [];
-    this.filterSrv.monthFilter.forEach(mth => {
+    this.filterSrv.monthFilter.map(mth => {
       this.monthDataDh.push(this.filterSrv.filterByDateCash(this.allData, new Date().getTime(), mth))
     });
 
-    this.monthData =[];
+
     this.monthData = this.monthDataDh;
     console.log(this.monthData);
     // for (var i = 0; i < this.monthData.length; i++) {
@@ -346,66 +359,39 @@ export class DealerDashboadComponent implements OnInit {
     this.sltMonth(month);
     this.weekData = [];
     this.billData = [];
+    this.daysData = [];
     let weekList = this.filterSrv.getWeeksStartAndEndInMonth(month, this.filterSrv.today.getMonth());
-    console.log(weekList);
-    // console.log(this.selectArea);
-  //  console.log(this.monthDataDh);
-  let filterData = []
+    let filterData = []
     if (this.paid) {
       filterData = this.dataResult[this.currentActiveTopTab];
     } else {
       filterData = this.allData;
     }
-    console.log(filterData);
-      weekList.forEach(e => {
-        this.weekData.push(this.filterSrv.filterByBillDatecash(filterData , e.end.getTime(),  e.start.getTime()))
-      });
-      // const setRange = [(month -1)*4, (((month -1)*4) + 4) ];
+    weekList.forEach(e => {
+      this.weekData.push(this.filterSrv.filterByBillDatecash(filterData , e.end.getTime(),  e.start.getTime()))
+    });
 
-      // console.log(this.weekData);
-      // let d = [];
-      // for (let i=0; i < this.weekData.length; i++) {
-      //   if (i>= setRange[0] && i<= setRange[1]) {
-      //     d.push(this.weekData[i])
-      //   }
-      // }
-
-      // this.weekData = d;
-      this.billDData = this.monthData[index].list;
-
-
-
-    console.log(this.billDData);
-
+    this.billDData = this.monthData[index].list;
 
     this.selectSector = null;
     this.selectBrand = null;
     this.col3Data = [];
     this.col4Data = [];
-    //console.log(this.weekData);
+
 
   }
 
 
   filterDays(month: number,  data: any): void {
-   // console.log(month);
-  //  this.sltMonth(month);
+
     this.daysData = [];
-    //console.log(data);
-   // this.billDData = this.weekData[month].list;
+
     let daysList = this.filterSrv.getDaysStartAndEndInMonth(month, this.filterSrv.today.getMonth());
-     console.log(daysList);
-    // console.log(this.selectArea);
-
-      daysList.forEach(e => {
-        this.daysData.push(this.filterSrv.filterByBillDatecash(data , e.end.getTime(), e.start.getTime()))
-      });
+    daysList.forEach(e => {
+      this.daysData.push(this.filterSrv.filterByBillDatecash(data , e.end.getTime(), e.start.getTime()))
+    });
      this.billDData = this.weekData[month -1].list;
-
-
      const setRange = [(month -1)*7, (((month -1)*7) + 7) ];
-
-     console.log(this.weekData);
      let d = [];
      for (let i=0; i < this.daysData.length; i++) {
        if (i>= setRange[0] && i<= setRange[1]) {
@@ -413,16 +399,12 @@ export class DealerDashboadComponent implements OnInit {
        }
      }
 
-     this.daysData = d;
-    // console.log(this.weekData);
-
+    this.daysData = d;
     this.selectWeek = month -1;
     this.selectSector = null;
     this.selectBrand = null;
     this.col3Data = [];
     this.col4Data = [];
-    //console.log(this.weekData);
-
   }
 
 
@@ -505,21 +487,50 @@ export class DealerDashboadComponent implements OnInit {
       this.productChange.next(event.target.value);
     }
   }
+  setMobileNumber(val) {
+    this.setMobile = val;
+  }
 
+  verifyMobile() {
+
+      this.dMsg = {msg: "Please wait verifying mobile number.", alert: 'alert-success'};
+      this.fetch.verifyRetailerMobileNumber({regMobile: this.setMobile}).subscribe((data: any) => {
+        if (data ==null) {
+          this.delearDetail = data;
+        } else {
+          this.delearDetail = data;
+          // this.screenFirst = false;
+          // this.screenSecond = true;
+        }
+        this.verificationDone = true;
+        this.dMsg = {};
+        console.log(data);
+      })
+
+  }
+  moveToSecondScreen () {
+      this.screenFirst = false;
+      this.screenSecond = true;
+  }
   NewDealerBill () {
     this.newBill = true;
+
     this.selectedProduct.forEach((data, index) => {
       if (this.selectedProduct[index].quantity == undefined) {
         this.selectedProduct[index]["quantity"] = 1;
       }
     });
 
-    this.fetch.createNewInvoice({"selectedProducts": this.selectedProduct}).subscribe(
+    this.fetch.createNewInvoice({"selectedProducts": this.selectedProduct, "company": this.authService.getCompanyName(), "type": "dashboard"}).subscribe(
       res => {
         this.dMsg = {msg: "Bill created successfully.", alert: 'alert-success'};
         this.selectedProduct = [];
         this.dBtm = false;
         this.paid = false;
+        res["mobilenumber"] = this.setMobile;
+        res['domain'] = this.authService.getDomainName();
+        res['companyName'] = this.authService.getCompanyName();
+        res['type'] = 'shop';
 
         setTimeout(() => {
           this.dMsg = {};
@@ -541,7 +552,7 @@ export class DealerDashboadComponent implements OnInit {
     if (this.selectedProduct[index] !== undefined) {
      this.selectedProduct[index]['quantity'] = parseInt(val);
     }
-    console.log(this.selectedProduct);
+
     this.selectedProduct.map((data) => {
       console.log(data.price);
       console.log(data.quantity);
@@ -553,8 +564,19 @@ export class DealerDashboadComponent implements OnInit {
     this.dBtm = false;
       let requestData = this.deliveryFrm.value;
       requestData['category'] = 'delivery';
-      requestData['payMode'] = this.paymentModeForCredit;
-      console.log(requestData);
+      requestData['payStatus'] = false;
+      if (this.paid) {
+        requestData['payMode'] = this.paymentModeForCredit;
+        requestData['payStatus'] = true;
+      } else {
+        requestData['payMode'] = this.deliveryFrm.value.payMode;
+        if (this.deliveryFrm.value.payMode !== "") {
+
+          requestData['payStatus'] = true;
+        } else {
+          requestData['payStatus'] = false;
+        }
+      }
 
       this.deliveryService.moveToDelivery(requestData).subscribe(
         res => {
@@ -624,8 +646,8 @@ export class DealerDashboadComponent implements OnInit {
     err => {
       console.log("hello");
     })
-
   }
+
   upiPaymentData (index, data: any) {
     this.billDData = this.daysData[index].list;
     this.selectedDay = index;

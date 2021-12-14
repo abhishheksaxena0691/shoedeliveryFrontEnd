@@ -1,3 +1,4 @@
+import { AuthService } from './../../guard/auth.service';
 import { DeliveryService } from './../../delivery/delivery.service';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { FilterService } from '../../shared/filter.service';
@@ -104,7 +105,7 @@ export class MoveToCreditComponent {
   paymentForm: FormGroup;
   msg: string;
   movetocredit: FormGroup;
-  constructor(private formBuilder: FormBuilder, private fetch: DashboardService, private modalService: BsModalService, private filterSrv: FilterService, public deliveryService: DeliveryService) {
+  constructor(private formBuilder: FormBuilder, private fetch: DashboardService, private modalService: BsModalService, private filterSrv: FilterService, public deliveryService: DeliveryService,  public authService: AuthService) {
     this.productChange
     .pipe(debounceTime(900), distinctUntilChanged())
     .subscribe((value) => {
@@ -200,6 +201,8 @@ export class MoveToCreditComponent {
       });
       console.log(this.monthDataDh);
       this.monthData =[];
+
+      this.daysData = [];
       this.monthData = this.monthDataDh;
       for (var i = 0; i < this.monthData.length; i++) {
         this.billDData =  this.billDData.concat(this.monthData[i].list);
@@ -225,7 +228,7 @@ export class MoveToCreditComponent {
 
 
   getProfileInfo():void {
-    this.fetch.getProfInfo().subscribe(
+    this.fetch.getProfInfo(this.authService.getLogged()).subscribe(
       res => { this.profInfo = res; },
       err => { this.pgMsg = {msg: err.error, alert: 'alert-danger'}; }
     )
@@ -277,6 +280,7 @@ export class MoveToCreditComponent {
     this.sltMonth(month);
     this.weekData = [];
     this.billData = [];
+    this.daysData = [];
     let weekList = this.filterSrv.getWeeksStartAndEndInMonth(month, this.filterSrv.today.getMonth());
     console.log(weekList);
     // console.log(this.selectArea);

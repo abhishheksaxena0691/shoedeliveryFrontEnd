@@ -1,0 +1,140 @@
+
+<div class="jumbotron">
+  <div class="row">
+    <div class="col-8"> <h1>{{profileData.companyName}}</h1>
+      <h5>{{profileData.domain}}</h5> </div>
+    <div class="col-4 heading"> <h5>{{profileData.fstName}} {{profileData.lstName}} ({{profileData.mobileNo}})</h5></div>
+    <!-- <div class="col-8"><span style="float: right;">{{profileData?.rating?.overallrating}} / 5</span></div> <div class="col-4"></div> -->
+  </div>
+
+<div class="container">
+  <div class="cardDetails">
+    <div class="container-fliud">
+      <div class="wrapper row">
+        <div class="preview col-md-12">
+
+          <div class="preview-pic tab-content">
+            <ng-container  *ngFor="let item of profileData.fileName; index as i">
+                <div [ngClass]="{'active': i == setCurrentIndexImage}" class="tab-pane" id="pic-1" *ngIf="item.extension != 'mp4'">
+                  <img  [src]="api.delear+ 'uploads/comunication/'+ item.name" height="500px" />
+                </div>
+                <div [ngClass]="{'active': i == setCurrentIndexImage}" class="tab-pane" id="pic-1" *ngIf="item.extension == 'mp4'">
+                      <video width="420" height="240" controls>
+                        <source  [src]="api.delear+ 'uploads/comunication/'+ item.name" type="video/mp4"/>
+
+                      </video>
+                </div>
+          </ng-container>
+          </div>
+          <ul class="preview-thumbnail nav nav-tabs">
+            <ng-container  *ngFor="let item of profileData.fileName; index as i">
+              <li [ngClass]="{'active': i == setCurrentIndexImage}"  *ngIf="item.extension != 'mp4'" (click)="setCurrentImage(i)"><a data-target="#pic-1" data-toggle="tab" >
+                  <img  [src]="api.delear+ 'uploads/comunication/medium/'+ item.name" /></a>
+              </li>
+              <li [ngClass]="{'active': i == setCurrentIndexImage}"  *ngIf="item.extension == 'mp4'" (click)="setCurrentImage(i)" ><a data-target="#pic-1" data-toggle="tab" >
+                  <img  src="../../../assets/images/videoThumbnail.jpg" height="177"/></a>
+               </li>
+            </ng-container>
+          </ul>
+
+        </div>
+        <div class="details col-md-12">
+          <p class="product-description" [innerHTML]="profileData.description | safeHtml"></p>
+        </div>
+
+        <div class="card-body">
+          <ul class="list-group">
+
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <span>Language </span><span class="badge badge-danger badge-pill">{{profileData?.language == undefined ? 'N/A' : profileData?.language}}</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <span> Loyalty Point</span><span class="badge badge-danger badge-pill">{{profileData?.loyaltyPoint}}</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+            <span> Refund Policy</span><span class="badge badge-danger badge-pill">{{profileData?.refundPolicy}}</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <span> Return Policy</span><span class="badge badge-danger badge-pill">{{profileData?.returnPolicy}}</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <span>credit </span><span class="badge badge-danger badge-pill">{{profileData?.credit}}</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <span>Address </span><span class="badge badge-danger badge-pill">{{profileData?.address}}</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <span>shop Age </span><span class="badge badge-danger badge-pill">{{profileData?.shopAge}}</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <span> Shop Type</span><span class="badge badge-danger badge-pill">{{profileData?.shopType}}</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <span> Total Area</span><span class="badge badge-danger badge-pill">{{profileData?.totalArea}}</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <span> Average Delivery</span>
+              <span class="badge badge-danger badge-pill" *ngIf="profileData?.rating?.averageDelivery != undefined">{{profileData?.rating?.averageDelivery}}/5</span>
+              <span class="badge badge-danger badge-pill" *ngIf="profileData?.rating?.averageDelivery == undefined">N/A</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <span> Overall Rating</span><span class="badge badge-danger badge-pill" *ngIf="profileData?.rating?.overallrating != undefined">{{profileData?.rating?.overallrating}}/5</span>
+              <span class="badge badge-danger badge-pill" *ngIf="profileData?.rating?.overallrating == undefined">N/A</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <span> PaymentEase</span><span class="badge badge-danger badge-pill" *ngIf="profileData?.rating?.paymentEase != undefined">{{profileData?.rating?.paymentEase}}/5</span>
+              <span class="badge badge-danger badge-pill" *ngIf="profileData?.rating?.paymentEase == undefined">N/A</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <span> Product Price</span><span class="badge badge-danger badge-pill" *ngIf="profileData?.rating?.productPrice != undefined">{{profileData?.rating?.productPrice}}/5</span>
+              <span class="badge badge-danger badge-pill" *ngIf="profileData?.rating?.productPrice == undefined">N/A</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <span> Product Quality</span><span class="badge badge-danger badge-pill" *ngIf="profileData?.rating?.productQuality != undefined">{{profileData?.rating?.productQuality}}/5</span>
+              <span class="badge badge-danger badge-pill" *ngIf="profileData?.rating?.productQuality == undefined">N/A</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <span> Refund Rating</span><span class="badge badge-danger badge-pill" *ngIf="profileData?.rating?.refundRating != undefined">{{profileData?.rating?.refundRating}}/5</span>
+              <span class="badge badge-danger badge-pill" *ngIf="profileData?.rating?.refundRating == undefined">N/A</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <span> Staff Behaviour</span><span class="badge badge-danger badge-pill" *ngIf="profileData?.rating?.staffBehaviour != undefined">{{profileData?.rating?.staffBehaviour}}/5</span>
+              <span class="badge badge-danger badge-pill" *ngIf="profileData?.rating?.staffBehaviour == undefined">N/A</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <span> Staff Helping</span><span class="badge badge-danger badge-pill" *ngIf="profileData?.rating?.staffHelping != undefined">{{profileData?.rating?.staffHelping}}/5</span>
+              <span class="badge badge-danger badge-pill" *ngIf="profileData?.rating?.staffHelping == undefined">N/A</span>
+            </li>
+
+
+
+
+            </ul>
+            </div>
+
+      </div>
+      <div class="row justify-content-center mx-0 mx-md-auto">
+        <div class="col-lg-12 col-md-11 px-1 px-sm-2">
+            <div class="card border-0 px-3">
+                <!-- top row -->
+                <div class="d-flex row py-5 px-5 bg-light">
+                    <div class="md-12">
+
+                      <div class="form-group">
+                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" cols="50" [(ngModel)]="reviewMerchant" ></textarea>
+                      </div>
+
+                      <button class="btn btn-red px-4" data-toggle="collapse" data-target="#demo" [disabled]="reviewMerchant.length == 0" (click)="writeReview()">WRITE A REVIEW</button>
+
+                    </div>
+
+                  </div>
+
+            </div>
+        </div>
+    </div>
+    </div>
+  </div>
+
+
+</div>

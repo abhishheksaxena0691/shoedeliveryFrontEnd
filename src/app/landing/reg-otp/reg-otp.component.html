@@ -4,16 +4,293 @@
             <h1>Verify Your Account</h1>
             <div *ngIf="pgMsg" class="alert" [ngClass]="pgMsg.alert">{{pgMsg.msg}}</div>
             <form [formGroup]="regFrm" (submit)="verifyOn()">
-                <h4>OTP</h4>
-                <input type="text" formControlName="otp" />
-                <div class="alert alert-danger inputMsg" role="alert" *ngIf="frmSubmit && autoFrm.otp.errors">
-                    <div *ngIf="autoFrm.otp.errors.required">Please mention your username</div>
+              <h4>OTP</h4>
+              <input type="text" formControlName="otp" />
+              <div class="alert alert-danger inputMsg" role="alert" *ngIf="frmSubmit && autoFrm.otp.errors">
+                  <div *ngIf="autoFrm.otp.errors.required">Please mention your username</div>
+              </div>
+              <div class="row mt-2">
+                  <div class="col-4">
+                    <h4>Language</h4>
+                  </div>
+                  <div class="col-8">
+                    <label style="float: left;" class="ml-2">
+                      <input type="checkbox" value="English" (change)="onCheckChange($event.target.checked, $event.target.value)">
+                     English
+                    </label>
+                    <label style="float: left;" class="ml-2">
+                    <input type="checkbox" value="Hindi" (change)="onCheckChange($event.target.checked, $event.target.value)">
+                     Hindi
+                    </label>
+                    <label style="float: left;" class="ml-2">
+                    <input type="checkbox" value="Malayalam" (change)="onCheckChange($event.target.checked, $event.target.value)">
+                    Malayalam
+                    </label>
+                    <label style="float: left;" class="ml-2">
+                    <input type="checkbox" value="Kannada" (change)="onCheckChange($event.target.checked, $event.target.value)">
+                    Kannada
+                    </label>
+                    <label style="float: left;" class="ml-2">
+                    <input type="checkbox" value="Telugu" (change)="onCheckChange($event.target.checked, $event.target.value)">
+                    Telugu
+                    </label>
+                    <label style="float: left;" class="ml-2">
+                      <input type="checkbox" value="Tamil" (change)="onCheckChange($event.target.checked, $event.target.value)">
+                      Tamil
+                    </label>
+
+                  </div>
                 </div>
-                
-                <button type="submit" [disabled]="frmBtm">Verify</button>
-                <hr />
-                <h3>Not yet get the code? <a >Resend</a></h3>
-            </form>
+                <div class="row mt-2">
+                  <div class="col-4">
+                          <h4>Loyalty Point</h4>
+                    </div>
+                  <div class="col-8">
+                      <label>
+                        <input type="radio" value="yes" formControlName="loyaltyPoint"/>
+                          <span>Yes</span>
+                      </label>
+                      <label>
+                        <input type="radio" value="no" formControlName="loyaltyPoint"/>
+                          <span>No</span>
+                      </label>
+                      <div class="alert alert-danger inputMsg" role="alert" *ngIf="frmSubmit && autoFrm.loyaltyPoint.errors">
+                          <div *ngIf="autoFrm.loyaltyPoint.errors.required">Please mention your Loyalty Point</div>
+                      </div>
+                  </div>
+              </div>
+
+              <div class="row mt-2">
+                <div class="col-4">
+                    <h4>Refund Policy</h4>
+                  </div>
+                  <div class="col-8">
+                    <label> <input type="radio" value="yes" formControlName="refundPolicy"/><span>Yes</span></label>
+                    <label> <input type="radio" value="no" formControlName="refundPolicy"/><span>No</span> </label>
+                    <div class="alert alert-danger inputMsg" role="alert" *ngIf="frmSubmit && autoFrm.refundPolicy.errors">
+                        <div *ngIf="autoFrm.refundPolicy.errors.required">Please mention your Refund Policy</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row mt-2">
+                      <div class="col-4">
+                        <h4>Return Policy</h4>
+                      </div>
+                      <div class="col-8">
+                        <label><input type="radio" value="yes" formControlName="returnPolicy"/><span>Yes</span></label>
+                        <label><input type="radio" value="no" formControlName="returnPolicy"/><span>No</span></label>
+                        <div class="alert alert-danger inputMsg" role="alert" *ngIf="frmSubmit && autoFrm.returnPolicy.errors">
+                            <div *ngIf="autoFrm.returnPolicy.errors.required">Please mention your Loyalty Point</div>
+                        </div>
+                      </div>
+                  </div>
+
+                  <div class="row mt-2">
+                    <div class="col-4">
+              <h4>Credit Policy</h4>
+            </div>
+            <div class="col-8">
+              <label>
+                <input type="radio" value="yes" formControlName="credit"/>
+                  <span>Yes</span>
+              </label>
+              <label>
+                <input type="radio" value="no" formControlName="credit"/>
+                  <span>No</span>
+              </label>
+              <div class="alert alert-danger inputMsg" role="alert" *ngIf="frmSubmit && autoFrm.credit.errors">
+                  <div *ngIf="autoFrm.credit.errors.required">Please mention your Loyalty Point</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row mt-2">
+            <div class="col-4">
+              <h4>Dor Delivery</h4>
+            </div>
+            <div class="col-8">
+              <label>
+                <input type="radio" value="yes" formControlName="doorDelivery"/>
+                  <span>Yes</span>
+              </label>
+              <label>
+                <input type="radio" value="no" formControlName="doorDelivery"/>
+                  <span>No</span>
+              </label>
+              <div class="alert alert-danger inputMsg" role="alert" *ngIf="frmSubmit && autoFrm.doorDelivery.errors">
+                  <div *ngIf="autoFrm.doorDelivery.errors.required">Please mention your Loyalty Point</div>
+              </div>
+            </div>
+          </div>
+
+
+              <h4>Address</h4>
+              <input type="text" formControlName="address" />
+              <div class="alert alert-danger inputMsg" role="alert" *ngIf="frmSubmit && autoFrm.address.errors">
+                  <div *ngIf="autoFrm.address.errors.required">Please mention your address</div>
+              </div>
+
+
+              <h4>Shop Age</h4>
+              <input type="text" formControlName="shopAge" />
+              <div class="alert alert-danger inputMsg" role="alert" *ngIf="frmSubmit && autoFrm.shopAge.errors">
+                  <div *ngIf="autoFrm.shopAge.errors.required">Please mention your shop age</div>
+              </div>
+              <h4>GST Number</h4>
+              <input type="text" formControlName="gstNumber" />
+              <div class="alert alert-danger inputMsg" role="alert" *ngIf="frmSubmit && autoFrm.gstNumber.errors">
+                  <div *ngIf="autoFrm.gstNumber.errors.required">Please mention your GST number</div>
+              </div>
+              <h4>Alternative Number</h4>
+              <input type="text" formControlName="alternativenumber" />
+              <div class="alert alert-danger inputMsg" role="alert" *ngIf="frmSubmit && autoFrm.alternativenumber.errors">
+                  <div *ngIf="autoFrm.alternativenumber.errors.required">Please mention your alternative number</div>
+              </div>
+
+
+              <h4>Shop Type</h4>
+              <input type="text" formControlName="shopType" />
+              <div class="alert alert-danger inputMsg" role="alert" *ngIf="frmSubmit && autoFrm.shopType.errors">
+                  <div *ngIf="autoFrm.shopType.errors.required">Please mention your shop type</div>
+              </div>
+
+              <h4>Total Area</h4>
+              <input type="text" formControlName="totalArea" />
+              <div class="alert alert-danger inputMsg" role="alert" *ngIf="frmSubmit && autoFrm.totalArea.errors">
+                  <div *ngIf="autoFrm.totalArea.errors.required">Please mention your total area</div>
+              </div>
+              <h4>Description of Shop</h4>
+              <angular-editor [placeholder]="'Enter text here...'" formControlName="description"  [config]="editorConfig"></angular-editor>
+
+              <div class="row">
+                <div class="col-12 form-group">
+                  <label for="file-upload" class="custom-file-upload caption"> Add Image </label>
+                  <input id="file-upload" type="file" (change)="uploadClassifiedattachment($event)" accept="image/x-png, image/jpeg"/>
+                </div>
+                <span style="color: #aa0000;" *ngIf="imgURL == 0">At least one image is required</span>
+            </div>
+            <div class="row"  *ngIf="uploadedVideo == ''">
+              <div class="col-12 form-group">
+                <label for="file-upload1" class="custom-file-upload caption"> Add Video </label>
+                <input id="file-upload1" type="file" (change)="uploadClassifiedVideo($event, uploadingFolder)" accept="video/mp4"/>
+              </div>
+            </div>
+            <div class="row"  *ngIf="logoResult == ''">
+              <div class="col-12 form-group">
+                <label for="file-upload2" class="custom-file-upload caption"> Add Logo </label>
+                <input id="file-upload2" type="file" (change)="uploadLogo($event)" accept="image/x-png, image/jpeg"/>
+              </div>
+            </div>
+            <div class="row">
+                <div class="col-12 form-group">
+
+                  <ul class="nav mt-2">
+                    <ng-container  *ngFor="let item of imgURL; index as i">
+                      <li class="ml-2">
+                        <div style="position:relative;">
+                          <button type="submit" class="close AClass"  (click)="removeClassified(i)">
+                            <span>&times;</span>
+                          </button>
+
+                          <img [src]="item" height="200" width="200"/>
+                      </div>
+                      </li>
+
+                    </ng-container>
+                  </ul>
+                </div>
+            </div>
+            <div class="row">
+              <div class="col-12 form-group" *ngIf="uploadedVideo != ''">
+                <img src="../../../assets/images/videoThumbnail.jpg" (click)="openVideo(playVideo, {'name': uploadedVideo})" height="80px" width="80px"/>
+                {{uploadedVideo}} <span class="close"    (click)="removeVideo(i)">&times;</span>
+              </div>
+                <div class="col-12 mt-2">
+                  <div class="form-group">
+
+
+
+                  </div>
+                </div>
+            </div>
+            <div class="row" *ngIf="logoResult != ''">
+              <div class="col-4 form-group"></div>
+              <div class="col-4 form-group">
+
+
+                      <div style="position:relative;">
+                        <button type="submit" class="close AClass"  (click)="removeLogo()">
+                          <span>&times;</span>
+                        </button>
+
+                        <img [src]="logoResult" height="200" width="200"/>
+                    </div>
+
+              </div>
+              <div class="col-4 form-group"></div>
+          </div>
+            <div class="row">
+
+              <div class="col-12 text-center">
+              <button type="submit" [disabled]="!regFrm.valid || imgURL.length == 0 || languageSupport.length == 0" class="verify">Verify</button>
+              <hr />
+              </div>
+
+            </div>
+
+              <h3>Not yet get the code? <a >Resend</a></h3>
+          </form>
         </div>
     </aside>
 </section>
+
+
+<ng-template #playVideo>
+  <div class="modal-header">
+
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-12">
+
+          <video width="420" height="240" controls>
+            <source  [src]="api.delear+ 'uploads/comunication/'+ setImageName" type="video/mp4">
+
+          </video>
+
+
+      </div>
+
+    </div>
+
+  </div>
+</ng-template>
+<ng-template #uploadingFolder>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Uploading Image</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-12">
+        <div class="slideshow-container">
+          <div class="mySlides">
+            <div class="progress">
+              <div class="progress-bar" role="progressbar"  [style.width]="imageUploadPercent + '%'">
+                <span class="sr-only">{{imageUploadPercent}} % Complete</span>
+              </div>
+            </div>
+            <div class="card-body sliderBody ml-1"> {{imageUploadPercent}} % completed </div>
+            </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>

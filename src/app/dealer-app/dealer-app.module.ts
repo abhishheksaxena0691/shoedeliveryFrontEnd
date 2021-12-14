@@ -22,6 +22,7 @@ import { ModalModule } from 'ngx-bootstrap/modal';
     NgSelectModule,
     FormsModule,
     ReactiveFormsModule,
+
     ModalModule.forRoot()
   ]
 })
